@@ -17,10 +17,10 @@ my_array::my_array( unsigned int size ) {
 my_array :: ~my_array(){
   /*
   for (int x = 0; x < m_size; x++){
-    m_data[x] = (int) nullptr; 
-  }
+    delete m_data[x]
+  } 
   */
-  delete m_data;
+  delete []m_data;
 }
 
 
@@ -50,6 +50,13 @@ my_array :: my_array(const my_array& arr){
 }
 
 my_array& my_array :: operator=(const my_array& arr){
+  
+  if (this == &arr){
+    return *this;
+  }
+
+  delete []m_data;
+
   m_data = new int[arr.m_size];
   m_size = arr.m_size;
   for (int x = 0; x < arr.m_size; x++){
