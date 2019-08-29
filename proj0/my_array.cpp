@@ -13,6 +13,18 @@ my_array::my_array( unsigned int size ) {
   m_size = size;
 }
 
+
+my_array :: ~my_array(){
+  /*
+  for (int x = 0; x < m_size; x++){
+    m_data[x] = (int) nullptr; 
+  }
+  */
+  delete m_data;
+}
+
+
+
 my_array::my_array(int* data, int len) {
 
   // if data array is empty, throw range_error exception
@@ -29,6 +41,24 @@ my_array::my_array(int* data, int len) {
   }
 }
 
+my_array :: my_array(const my_array& arr){
+  m_data = new int[arr.m_size];
+  m_size = arr.m_size;
+  for (int x = 0; x < arr.m_size; x++){
+    m_data[x] = arr.m_data[x]; 
+  }
+}
+
+my_array& my_array :: operator=(const my_array& arr){
+  m_data = new int[arr.m_size];
+  m_size = arr.m_size;
+  for (int x = 0; x < arr.m_size; x++){
+    m_data[x] = arr.m_data[x]; 
+  }
+
+  return *this;
+}
+
 int my_array::size() const { return m_size; }
 
 int& my_array::at(unsigned int indx) {
@@ -37,4 +67,6 @@ int& my_array::at(unsigned int indx) {
   }
   return m_data[indx];
 }
+
+
 
