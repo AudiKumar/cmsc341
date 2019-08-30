@@ -11,6 +11,13 @@
     - complete the myarray class by adding the rule of three to it. You will test it and check for memory leaks along with that 
     - there are two tests, the code will run but you need to check to see if the output is correct
 
+
+## Updates to the project
+- Thursday August 29, 2019
+    - Compiling with -Wall produced a warning regarding comparison of signed and unsigned int variables.  The type of m_size has been changed to unsigned int to eliminate this message.
+
+    - In addition to writing the copy constructor, destructor, and assignment operator, you must complete the test of the assignment operator in test1.cpp.
+
 ### what valgrind should say
 ```
    ==8613== 
