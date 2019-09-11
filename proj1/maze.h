@@ -135,10 +135,13 @@ public:
     void push(src_dest_t src_dest);
     src_dest_t pop();
     src_dest_t read() const;
+  
+  //private vars of the solve stacks  
   private:
     entry_t *_stack;
   };
-  
+ 
+ //private vars for the maze class  
  private:
   cell_t *_maze;
   int _ncell;

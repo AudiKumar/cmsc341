@@ -1,6 +1,8 @@
 #include <stdexcept>
 #include "maze.h"
 
+using namespace std;
+
 Maze::Maze(int ncell) {
   if (ncell < 1) {
     throw std::invalid_argument("Maze::Maze(): ncell must be >= 1");
@@ -11,7 +13,7 @@ Maze::Maze(int ncell) {
 }
 
 Maze::~Maze() {
-  // IMPLEMENT DESTRUCTOR
+  delete [] _maze;
 }
 
 void Maze::readFile(std::string fileName) {
@@ -99,8 +101,14 @@ Maze::SolveStack::SolveStack() {
   _stack = nullptr;
 }
 
-Maze::SolveStack::~SolveStack() {
-  // IMPLEMENT DESTRUCTOR
+Maze::SolveStack::~SolveStack(){
+    //StackEntry temp = entry_t;
+    while(entry_t != nullptr){
+        StackEntry temp = _stack;
+        stack_t = _stack->next;
+        delete temp;
+        
+    }
 }
 
 bool Maze::SolveStack::empty() const {
@@ -108,13 +116,31 @@ bool Maze::SolveStack::empty() const {
 }
 				   
 void Maze::SolveStack::push(src_dest_t src_dest) {
+    
   // IMPLEMENT PUSH METHOD
 }
 
 src_dest_t Maze::SolveStack::pop() {
-  // IMPLEMENT POP METHOD
+  if (_maze == nullptr){
+      throw std::domain_error("Maze::SolveStack:pop() attempt to retrieve from an uninitialized Stack object");
+  }
+
+  else{
+      //start poping :) 
+  }
 }
 
 src_dest_t Maze::SolveStack::read() const {
-  // IMPLEMENT READ METHOD
+    if (_maze == nullptr){ 
+        //src_dest_t front = _stack->source_dest;
+        throw std::domain_error("Maze::SolveStack:read() attempt to retrieve from an uninitialized Stack object");
+
+    }
+    else{
+        throw std ::
+    }
+
+    //get the head of the linked list
+    //the head's next 
+    
 }
