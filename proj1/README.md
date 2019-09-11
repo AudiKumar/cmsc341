@@ -45,4 +45,22 @@ We are going to be writing a program to solve a maze
             4, 3, 9
             5, 0, 10 
     ```
- 
+
+    - we can assume that the encoded maze will probably be put into a vector and array 
+    - you will want to try to go through the maze (backtracking is more of a laste option)
+    - to prevent backtacking you will want to keep track of the current square and the previous
+    - the stack will store our progress through the maze, for every new sqaure you will want to push it onto the tsakc
+        - the stack will check the neighbhors of what is at the top and if possible visit them and will then visit a neighbhor and the process is reapted with the new square
+
+        - if the stack has no unvisted neighbhors then you backtrack to a previous square and pop off the current 
+        - IMPORTANT: if the stack is empty there is no solution
+
+- What are the bookkeeping issues you will need to worry about?
+    - when you are backtracking you have to you must mark the current square you are on as a "dead end"
+    - YOU CAN DO THIS BY DELETING THE SQUARE FROM IT PREDECESSORS LIST OF NEIGHBHORS 
+
+
+The provided .h file defines the constant VACANT to have the value of -1; you should use this constant to indicate deleted or empty neighbors as well as the predecessor to square 0.
+
+
+## Assigmment  
