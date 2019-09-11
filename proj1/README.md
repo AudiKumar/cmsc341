@@ -28,5 +28,21 @@ We are going to be writing a program to solve a maze
    +  +--+  +  +--+
    |4  9  14|19 24|
    +--+--+--+--+--+
+    
+   to encode this maze you will want to the have reachable neighbors be associated
+   with the square itself 
+
+   EX: 
+        In Sqaure 0 the reachable squares are 5 and 0 therefore square 0 would be encoded as
+        (0, 1, 5) 
+        
+        encoding the maze in the date file might begin as follows
+            
+            0, 1, 5
+            1, 0, 2, 6
+            2, 1, 7
+            3, 8, 4
+            4, 3, 9
+            5, 0, 10 
     ```
  
