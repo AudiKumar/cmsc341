@@ -94,7 +94,9 @@ void Maze::dump() const {
 }
 
 std::vector<int> Maze::solve() const {
-  // IMPLEMENT THE SOLVE METHOD
+    vector <int> path;
+
+    return path; 
 }
 
 Maze::SolveStack::SolveStack() {
@@ -103,9 +105,9 @@ Maze::SolveStack::SolveStack() {
 
 Maze::SolveStack::~SolveStack(){
     //StackEntry temp = entry_t;
-    while(entry_t != nullptr){
-        StackEntry temp = _stack;
-        stack_t = _stack->next;
+    while(_stack != nullptr){ // entry_t is the typedef name
+        entry_t* temp = _stack;
+        _stack = _stack->next;
         delete temp;
         
     }
@@ -116,17 +118,28 @@ bool Maze::SolveStack::empty() const {
 }
 				   
 void Maze::SolveStack::push(src_dest_t src_dest) {
-    
-  // IMPLEMENT PUSH METHOD
+    if(_stack == nullptr){
+       _stack = new StackEntry(src_dest);
+    }
+
+    else{
+        StackEntry* temp = new StackEntry(src_dest);
+        temp->next = _stack;
+        _stack = temp;
+    }
 }
 
 src_dest_t Maze::SolveStack::pop() {
-  if (_maze == nullptr){
+  if (_stack == nullptr){
       throw std::domain_error("Maze::SolveStack:pop() attempt to retrieve from an uninitialized Stack object");
   }
 
   else{
-      //start poping :) 
+    src_dest_t data = _stack->src_dest;
+    StackEntry* front = _stack;
+    _stack = _stack->next;
+    delete front;
+    return data;
   }
 }
 
@@ -137,10 +150,7 @@ src_dest_t Maze::SolveStack::read() const {
 
     }
     else{
-        throw std ::
+        return _stack->src_dest;
     }
-
-    //get the head of the linked list
-    //the head's next 
     
 }
