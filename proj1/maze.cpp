@@ -116,66 +116,81 @@ std::vector<int> Maze::solve() const {
     int dest = s.read().second;
     int newSrc = VACANT;
     int newDest = VACANT;
+    int nIndex; //neighbors index 
     cell_t currentCell = _mazeCopy[mazeIndex];
     cout << currentCell << endl; 
     int cellNum = currentCell.cellNum;
-    neighbor_t n = currentCell.neighbors;
+    neighbor_t& n = currentCell.neighbors;
 
     if (n[0] > 0 && n[0] != src ){
       newDest = n[0];
-      mazeIndex = newDest; 
+      nIndex = 0;
+      mazeIndex = newDest;
+      newSrc = dest;
+      s.push(pair <int, int>(newSrc, newDest));
     }
     
     else if (n[1] > 0 && n[1] != src ){
+      nIndex = 1;
       newDest = n[1];
-      mazeIndex = newDest; 
+      mazeIndex = newDest;
+      newSrc = dest;
+      s.push(pair <int, int>(newSrc, newDest)); 
     }
 
     else if (n[2] > 0 && n[2] != src ){
+      nIndex = 2;
       newDest = n[2];
-      mazeIndex = newDest; 
+      mazeIndex = newDest;
+      newSrc = dest;
+      s.push(pair <int, int>(newSrc, newDest)); 
     }
 
     else if  (n[3] > 0 && n[3] != src ){
+      nIndex = 3; 
       newDest = n[3];
       mazeIndex = newDest;
+      newSrc = dest;
+      s.push(pair <int, int>(newSrc, newDest));
     }
 
-    //reached when you need to pop stacks
+    //treached when you need to pop stacks
     else{
-      cout << "this is where you should pop" << endl;
-      break;
+      cout << "\n\n\n\n\n";      
+      cout << "before _mazeCopy being changed\n" << _mazeCopy[mazeIndex]  << endl;
+      cout << nIndex << endl; 
+
+
+      _mazeCopy[mazeIndex].neighbors[nIndex - 1] = VACANT; 
+
+      cout << "after _mazeCopy being changed\n" << _mazeCopy[mazeIndex] << endl;
+      
+      src_dest_t popVal = s.pop();
+
+
+      mazeIndex = popVal.first; //src becomes the new mazeIndex
+      cout << "stack is now poped\n" << popVal.first << "      " << popVal.second << endl; 
+      src = popVal.second; 
+      src_dest_t p = s.read();
+      
+      cout << "new top of the stack\n" << p.first << "         " << p.second << endl;
+      /* OLD STUFF THAT YOU TRIED THAT DIDN'T WORK OR THAT YOU DON"T NEED FOR NOW
+      
+      //currentCell.neighbors[nIndex - 1] = VACANT; 
+      //n[nIndex - 1] = VACANT;
+      //_mazeCopy[] = VACANT;
+
+      
+      //cout << "CONDITION WHERE YOU POP\n" << endl;
+      mazeIndex = popVal.first;
+      newDest = popVal.first;
+      newSrc = popVal.second;
+      cout << "src: " << src << endl;
+      */
+     
     }
-    newSrc = dest;
-    s.push(pair <int, int>(newSrc, newDest));
+    
   }
-
-  
-  
-  /*
-  src_dest_t front = s.read();
-  cout << "IN SOLVE STACK :)" << endl;
-  cout << "first: " << front.first << " second: " << front.second << endl; 
-  cout << "\n\n\n\n\n\n" << endl;
-  s.pop() //pops the first element in the stack to test pop
-  errors work so that means that its working :)
-  cout << "should error out now" << endl;
-  s.pop();
-  s.read();
-  */
-
-
-  //you should look at 
-  //look at the stack and take the first element 
-  //see where you can go, pass the first option
-  //-1 means that it isn't a vaible path 
-  //keep going until you find a "dead end"
-  //a "dead end" is a when there's no option but to go back
-  //if so go back and mark the prev as -1 
-  //you'll want to make a copy of the maze itself 
-  //so that you don't make modifications to the actuall maze
-   
-  //_maze is already populated
 
   return path; 
 }
