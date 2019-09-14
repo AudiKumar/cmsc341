@@ -20,7 +20,9 @@ int main() {
   mz.dump();
 
   auto path = mz.solve();
-
+  
+  cout << "the solution to this maze is below" << endl;
+  
   for (auto x : path) {
     std::cout << x << std::endl;
   }

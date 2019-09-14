@@ -144,7 +144,12 @@ public:
  //private vars for the maze class  
  private:
   cell_t *_maze;
+  cell_t *_mazeCopy;
   int _ncell;
+
+  void checkNeighbors(src_dest_t p); //will be used to check the the neighbhors of the current
+
+  // std :: string outputPair(src_dest_t p); // will output the pair in a readable way (for debugging)
 
   //
   // MAY ADD PRIVATE FUNCTION PROTOTYPES HERE

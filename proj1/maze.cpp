@@ -2,6 +2,12 @@
 #include "maze.h"
 
 using namespace std;
+void Maze :: checkNeighbors(src_dest_t p){
+  int src = p.first;
+  int dest = p.second;
+
+}
+
 
 Maze::Maze(int ncell) {
   if (ncell < 1) {
@@ -10,10 +16,12 @@ Maze::Maze(int ncell) {
 
   _ncell = ncell;
   _maze = new cell_t[_ncell];
+  _mazeCopy = new cell_t[_ncell];
 }
 
 Maze::~Maze() {
   delete [] _maze;
+  delete [] _mazeCopy; 
 }
 
 void Maze::readFile(std::string fileName) {
@@ -49,6 +57,7 @@ void Maze::reset(int ncell) {
   
   _ncell = ncell;
   _maze = new cell_t[_ncell];
+  _mazeCopy = new cell_t[_ncell];
 }
 
 void Maze::insert(cell_t cell) {
@@ -59,6 +68,7 @@ void Maze::insert(cell_t cell) {
     throw std::invalid_argument("Maze:insert(): invalid cell number");
   }
   _maze[cell.cellNum] = cell;
+  _mazeCopy[cell.cellNum] = cell; //added copy so that you don't modfiy the og maze
 }
   
 cell_t Maze::retrieve(int nc) const {
@@ -94,9 +104,51 @@ void Maze::dump() const {
 }
 
 std::vector<int> Maze::solve() const {
-    vector <int> path;
+  vector <int> path;
+  Maze :: SolveStack s;
+  s.push(pair <int,int>(VACANT, 0));
+  int mazeIndex = 0;
+  bool isSolved = false;
 
-    return path; 
+  while (isSolved == false || s.empty() == false){
+    int src = s.read().first;
+    int dest = s.read().second;
+    cout << "right before trying to access the mazeCopy" << endl;
+    cell_t currentCell = _mazeCopy[mazeIndex]; 
+    int cellNum = currentCell.cellNum;
+
+    
+    break;
+  }
+
+  
+  
+  /*
+  src_dest_t front = s.read();
+  cout << "IN SOLVE STACK :)" << endl;
+  cout << "first: " << front.first << " second: " << front.second << endl; 
+  cout << "\n\n\n\n\n\n" << endl;
+  s.pop() //pops the first element in the stack to test pop
+  errors work so that means that its working :)
+  cout << "should error out now" << endl;
+  s.pop();
+  s.read();
+  */
+
+
+  //you should look at 
+  //look at the stack and take the first element 
+  //see where you can go, pass the first option
+  //-1 means that it isn't a vaible path 
+  //keep going until you find a "dead end"
+  //a "dead end" is a when there's no option but to go back
+  //if so go back and mark the prev as -1 
+  //you'll want to make a copy of the maze itself 
+  //so that you don't make modifications to the actuall maze
+   
+  //_maze is already populated
+
+  return path; 
 }
 
 Maze::SolveStack::SolveStack() {
@@ -144,7 +196,7 @@ src_dest_t Maze::SolveStack::pop() {
 }
 
 src_dest_t Maze::SolveStack::read() const {
-    if (_maze == nullptr){ 
+    if (_stack == nullptr){ 
         //src_dest_t front = _stack->source_dest;
         throw std::domain_error("Maze::SolveStack:read() attempt to retrieve from an uninitialized Stack object");
 
