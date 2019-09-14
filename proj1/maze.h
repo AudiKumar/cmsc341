@@ -135,6 +135,8 @@ public:
     void push(src_dest_t src_dest);
     src_dest_t pop();
     src_dest_t read() const;
+
+
   
   //private vars of the solve stacks  
   private:
@@ -146,10 +148,6 @@ public:
   cell_t *_maze;
   cell_t *_mazeCopy;
   int _ncell;
-
-  void checkNeighbors(src_dest_t p); //will be used to check the the neighbhors of the current
-
-  // std :: string outputPair(src_dest_t p); // will output the pair in a readable way (for debugging)
 
   //
   // MAY ADD PRIVATE FUNCTION PROTOTYPES HERE

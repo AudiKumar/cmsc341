@@ -2,12 +2,6 @@
 #include "maze.h"
 
 using namespace std;
-void Maze :: checkNeighbors(src_dest_t p){
-  int src = p.first;
-  int dest = p.second;
-
-}
-
 
 Maze::Maze(int ncell) {
   if (ncell < 1) {
@@ -16,12 +10,12 @@ Maze::Maze(int ncell) {
 
   _ncell = ncell;
   _maze = new cell_t[_ncell];
-  _mazeCopy = new cell_t[_ncell];
+  //_mazeCopy = new cell_t[_ncell];
 }
 
 Maze::~Maze() {
   delete [] _maze;
-  delete [] _mazeCopy; 
+  //delete [] _mazeCopy; 
 }
 
 void Maze::readFile(std::string fileName) {
@@ -57,7 +51,7 @@ void Maze::reset(int ncell) {
   
   _ncell = ncell;
   _maze = new cell_t[_ncell];
-  _mazeCopy = new cell_t[_ncell];
+  //_mazeCopy = new cell_t[_ncell];
 }
 
 void Maze::insert(cell_t cell) {
@@ -106,92 +100,95 @@ void Maze::dump() const {
 std::vector<int> Maze::solve() const {
   vector <int> path;
   Maze :: SolveStack s;
+
+  s.push(pair<int,int>(VACANT,0));
+  int src = s.read().first; 
+  int dest = s.read().second; 
+  bool isSolved = false; 
+
+  while (isSolved == false && s.empty() == false){
+    cell_t 
+  }//end of while statement
+  
+
+
+  /*
+  Maze :: SolveStack s;
   s.push(pair <int,int>(VACANT, 0));
+  int src = s.read().first;
+  int dest = s.read().second;
+
   int mazeIndex = 0;
   bool isSolved = false;
 
-  while (isSolved == false && s.empty() == false){
+  cout << getNcell() - 1  << endl;
+  cout << _mazeCopy[getNcell() - 1].cellNum << endl;
+  
+
+  //int nIndex = 0; 
+  //first in the pair is previous seccond in the path is curr
+  while (isSolved == false || s.empty() == false){
     
-    int src = s.read().first;
-    int dest = s.read().second;
-    int newSrc = VACANT;
-    int newDest = VACANT;
-    int nIndex; //neighbors index 
-    cell_t currentCell = _mazeCopy[mazeIndex];
-    cout << currentCell << endl; 
-    int cellNum = currentCell.cellNum;
-    neighbor_t& n = currentCell.neighbors;
+    cell_t currentCell = _mazeCopy[dest];
 
-    if (n[0] > 0 && n[0] != src ){
-      newDest = n[0];
-      nIndex = 0;
-      mazeIndex = newDest;
-      newSrc = dest;
-      s.push(pair <int, int>(newSrc, newDest));
-    }
-    
-    else if (n[1] > 0 && n[1] != src ){
-      nIndex = 1;
-      newDest = n[1];
-      mazeIndex = newDest;
-      newSrc = dest;
-      s.push(pair <int, int>(newSrc, newDest)); 
+    if (currentCell.cellNum == _mazeCopy[getNcell()].cellNum){
+      cout << "solved" << endl;
+      isSolved = true;
     }
 
-    else if (n[2] > 0 && n[2] != src ){
-      nIndex = 2;
-      newDest = n[2];
-      mazeIndex = newDest;
-      newSrc = dest;
-      s.push(pair <int, int>(newSrc, newDest)); 
-    }
-
-    else if  (n[3] > 0 && n[3] != src ){
-      nIndex = 3; 
-      newDest = n[3];
-      mazeIndex = newDest;
-      newSrc = dest;
-      s.push(pair <int, int>(newSrc, newDest));
-    }
-
-    //treached when you need to pop stacks
     else{
-      cout << "\n\n\n\n\n";      
-      cout << "before _mazeCopy being changed\n" << _mazeCopy[mazeIndex]  << endl;
-      cout << nIndex << endl; 
+      //cout << "currentCell: " << currentCell << endl; //"\n" << "src(prev)" << src << endl; 
+      //cout << "dest[curr]" << dest << endl;
+      //cout << "in the loop" <<endl; 
+      int cellNum = currentCell.cellNum;
+      neighbor_t n = currentCell.neighbors;
 
 
-      _mazeCopy[mazeIndex].neighbors[nIndex - 1] = VACANT; 
 
-      cout << "after _mazeCopy being changed\n" << _mazeCopy[mazeIndex] << endl;
+      if (n[0] >= 0 && n[0] != src ){
+        src = dest;
+        dest = n[0];
+        s.push(pair <int, int>(src, dest));
+      }
+
+       else if (n[1] >= 0 && n[1] != src ){
+        src = dest;
+        dest = n[1];
+        s.push(pair <int, int>(src, dest)); 
+      }
+
+      else if (n[2] >= 0 && n[2] != src ){
+        src = dest;
+        dest = n[2];
+        s.push(pair <int, int>(src, dest)); 
+      }
+
+      else if  (n[3] >= 0 && n[3] != src ){
+        src = dest;
+        dest = n[3];
+        s.push(pair <int, int>(src, dest));
+      }
+
+      //treached when you need to pop stacks
+      else{
+        cout << "gets to else" << endl;
+        src_dest_t popVal = s.pop();
+        _mazeCopy[mazeIndex].neighbors[popVal.first] = VACANT;
+        mazeIndex = popVal.first; //src becomes the new mazeIndex 
+        src = popVal.second;
+      }
       
-      src_dest_t popVal = s.pop();
 
+    }//end of else statement
 
-      mazeIndex = popVal.first; //src becomes the new mazeIndex
-      cout << "stack is now poped\n" << popVal.first << "      " << popVal.second << endl; 
-      src = popVal.second; 
-      src_dest_t p = s.read();
-      
-      cout << "new top of the stack\n" << p.first << "         " << p.second << endl;
-      /* OLD STUFF THAT YOU TRIED THAT DIDN'T WORK OR THAT YOU DON"T NEED FOR NOW
-      
-      //currentCell.neighbors[nIndex - 1] = VACANT; 
-      //n[nIndex - 1] = VACANT;
-      //_mazeCopy[] = VACANT;
-
-      
-      //cout << "CONDITION WHERE YOU POP\n" << endl;
-      mazeIndex = popVal.first;
-      newDest = popVal.first;
-      newSrc = popVal.second;
-      cout << "src: " << src << endl;
-      */
-     
-    }
-    
+  }//end of while statement
+  
+  while (s.empty() == false){
+    path.push_back(s.pop().second);
   }
-
+  
+  //cout << _mazeCopy[sizeof(_mazeCopy[0])].cellNum << endl;
+  */  
   return path; 
 }
 
@@ -250,3 +247,4 @@ src_dest_t Maze::SolveStack::read() const {
     }
     
 }
+
