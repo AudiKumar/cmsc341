@@ -122,37 +122,31 @@ std::vector<int> Maze::solve() const {
     neighbor_t n = currentCell.neighbors;
 
     if (n[0] > 0 && n[0] != src ){
-      newSrc = dest;
       newDest = n[0];
-      //cout << "in solve " << endl;
-      cout << newSrc << "    " << newDest << endl;
       mazeIndex = newDest; 
-            
-      //break;
     }
     
     else if (n[1] > 0 && n[1] != src ){
-      newSrc = dest;
       newDest = n[1];
-      //cout << "in solve " << endl;
-      cout << newSrc << "    " << newDest << endl;
       mazeIndex = newDest; 
-      
-      //break;
     }
 
-    else if (n[2] > 0){
-      break;
+    else if (n[2] > 0 && n[2] != src ){
+      newDest = n[2];
+      mazeIndex = newDest; 
     }
 
-    else if  (n[3] > 0){
-      break;
+    else if  (n[3] > 0 && n[3] != src ){
+      newDest = n[3];
+      mazeIndex = newDest;
     }
 
+    //reached when you need to pop stacks
     else{
-      cout << "this segment should not be reached" << endl;
+      cout << "this is where you should pop" << endl;
+      break;
     }
-
+    newSrc = dest;
     s.push(pair <int, int>(newSrc, newDest));
   }
 
