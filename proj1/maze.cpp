@@ -110,15 +110,50 @@ std::vector<int> Maze::solve() const {
   int mazeIndex = 0;
   bool isSolved = false;
 
-  while (isSolved == false || s.empty() == false){
+  while (isSolved == false && s.empty() == false){
+    
     int src = s.read().first;
     int dest = s.read().second;
-    cout << "right before trying to access the mazeCopy" << endl;
-    cell_t currentCell = _mazeCopy[mazeIndex]; 
+    int newSrc = VACANT;
+    int newDest = VACANT;
+    cell_t currentCell = _mazeCopy[mazeIndex];
+    cout << currentCell << endl; 
     int cellNum = currentCell.cellNum;
+    neighbor_t n = currentCell.neighbors;
 
+    if (n[0] > 0 && n[0] != src ){
+      newSrc = dest;
+      newDest = n[0];
+      //cout << "in solve " << endl;
+      cout << newSrc << "    " << newDest << endl;
+      mazeIndex = newDest; 
+            
+      //break;
+    }
     
-    break;
+    else if (n[1] > 0 && n[1] != src ){
+      newSrc = dest;
+      newDest = n[1];
+      //cout << "in solve " << endl;
+      cout << newSrc << "    " << newDest << endl;
+      mazeIndex = newDest; 
+      
+      //break;
+    }
+
+    else if (n[2] > 0){
+      break;
+    }
+
+    else if  (n[3] > 0){
+      break;
+    }
+
+    else{
+      cout << "this segment should not be reached" << endl;
+    }
+
+    s.push(pair <int, int>(newSrc, newDest));
   }
 
   
