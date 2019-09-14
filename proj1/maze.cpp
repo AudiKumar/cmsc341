@@ -107,7 +107,11 @@ std::vector<int> Maze::solve() const {
   }
 
   
-  vector <int> path; 
+  vector <int> path;
+  vector <int> :: iterator it;
+
+  it = path.begin();
+
   Maze :: SolveStack s;
 
   
@@ -178,6 +182,14 @@ std::vector<int> Maze::solve() const {
     
 
   }//end of else statement
+
+  //inserts into the path array 
+  while(!s.empty()){
+    it = path.insert(it, s.pop().second);
+  }  
+
+  cout << path.size() << endl;
+
   return path; 
 }
 
