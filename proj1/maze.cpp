@@ -100,18 +100,13 @@ void Maze::dump() const {
 
 std::vector<int> Maze::solve() const {
 
+  //makes a local copy for the solve fn 
   cell_t _mazeCopy[getNcell()];
-  //creates a local copy of the maze to use 
-  for(int x = 0; x < getNcell(); x++){
+  for (int x = 0; x < getNcell(); x++){
     _mazeCopy[x] = _maze[x];
   }
 
-  
-  
-
   Maze :: SolveStack s;
-
-  
    
   s.push(pair <int,int>(VACANT, 0));
   int src = s.read().first;
@@ -170,30 +165,55 @@ std::vector<int> Maze::solve() const {
 
     //treached when you need to pop stacks
     else{
-      cout << "got to dead end" << endl;
-      cout << "src: " << src << " dest:" << dest << endl;
-      src_dest_t popVal = s.pop();
+      
+      //cout << "got to dead end" << endl;
+      //cout << "src: " << src << " dest:" << dest << endl;
+      //src_dest_t popVal = s.pop();
 
       //int oldDest = dest;
 
 
       cout << "nIndex: "<< nIndex << "    value:" << _mazeCopy[dest].neighbors[nIndex] << endl;
-      //dest = popVal.first;
-      //src = popVal.second;
-      src = popVal.first;
-      dest = popVal.second;
+      //src = popVal.first;
+      //dest = popVal.second;
       
+      
+      bool hasOptions = false;
 
-      int newNIndex = getNIndex(dest, src, _mazeCopy);
+      do{
+        src_dest_t popVal = s.pop();
+        src = popVal.first; //previous
+        dest = popVal.second; //current
 
-      if (newNIndex == nIndex){
-        cout << "THE NEW INDEX IS EQUAL TO NINDEX" << endl;
-        break;
-      }
+        int nIndex = getNIndex(dest, src, _mazeCopy);
 
-      else{
-        cout << "nINdex :" << nIndex  << "\nContent: " << _mazeCopy[dest].neighbors[nIndex] << endl;
-        cout << "NewNIndex: " << newNIndex << "\nContent:  " << _mazeCopy[dest].neighbors[newNIndex]  << endl;
+        _mazeCopy[dest].neighbors[nIndex] = VACANT;
+
+        //check all four spots and flip the boolean if you find an index 
+        // that isn't -1 or equal to the dest's prev
+        //keep going back until you have other options besides go back 
+        src_dest_t otherVal = s.read();
+        int newSrc = otherVal.first; // previous space
+        int newDest = otherVal.second; // where you were headed
+        /*
+        THIS CODE MAY WORK DON"T COMMENT OUT BRO
+        if (_mazeCopy[dest].neighbors[0] != VACANT && _mazeCopy[dest].neighbors[0] == src){
+          nIndex = 0;
+        } 
+
+        if (_mazeCopy[dest].neighbors[1] != VACANT && _mazeCopy[dest].neighbors[1] == src){
+          nIndex = 1;
+        } 
+
+        if (_mazeCopy[dest].neighbors[2] != VACANT && _mazeCopy[dest].neighbors[2] == src){
+          nIndex = 2;
+        } 
+
+        if (_mazeCopy[dest].neighbors[3] != VACANT && _mazeCopy[dest].neighbors[3] == src){
+          nIndex = 3;
+        } 
+        */
+      }while(hasOptions == false && s.empty() == false);
 
       }
     break;
@@ -242,7 +262,7 @@ std::vector<int> Maze::solve() const {
       //currentCell = _mazeCopy[dest];
       currentCell = _mazeCopy[src];
       */ 
-    }
+    
 
 
   }//end of while statement
@@ -250,14 +270,14 @@ std::vector<int> Maze::solve() const {
   vector <int> path;
   vector <int> :: iterator it;
 
-  it = path.begin();
+//  it = path.begin();
 
   //inserts into the path array 
-  while(!s.empty()){
-    it = path.insert(it, s.pop().second);
-  }  
+//  while(!s.empty()){
+ //   it = path.insert(it, s.pop().second);
+ // }  
 
-  cout << path.size() << endl;
+ // cout << path.size() << endl;
 
   return path; 
 }
@@ -324,21 +344,26 @@ int Maze :: getNIndex(int dest, int src, cell_t* _mazeCopy) const{
   
   //check all of the neighbhors and see if it it == to the current [dest]
   if (_mazeCopy[dest].neighbors[0] == src){
-    cout << "0 check" << endl;
     nIndex = 0;
   }
 
   //check all of the neighbhors and see if it it == to the current [dest]
   if (_mazeCopy[dest].neighbors[1] == src){
     nIndex = 1;
-    //_mazeCopy[dest].neighbors[1] = VACANT;
   }
 
   //check all of the neighbhors and see if it it == to the current [dest]
   if (_mazeCopy[dest].neighbors[2] == src){
     nIndex = 2;
-    //_mazeCopy[dest].neighbors[2] = VACANT;
   }
+
+  
+  if (_mazeCopy[dest].neighbors[3] == src){
+    nIndex = 3;
+  } 
+
   return nIndex;
 }
+
+
 
