@@ -141,16 +141,22 @@ public:
   //private vars of the solve stacks  
   private:
     entry_t *_stack;
+
   };
  
  //private vars for the maze class  
  private:
   cell_t *_maze;
   //cell_t *_mazeCopy;
+  
+  
 
   cell_t* copyMaze(); 
 
   int _ncell;
+
+  //gets the NIndex of the  returns either 1, 2, 3 or 4
+  int getNIndex(int destIndex,  int src, cell_t* _mazeCopy) const;
 
   //
   // MAY ADD PRIVATE FUNCTION PROTOTYPES HERE
