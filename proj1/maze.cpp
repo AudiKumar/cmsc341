@@ -89,7 +89,7 @@ void Maze::dump() const {
     }
     std::cout << "Cell " << i << " has neighbor cells: ";
     neighbor_t nbs = _maze[i].neighbors;
-    int n0, n1, n2, n3;
+    //int n0, n1, n2, n3;
     if ( nbs[0] >= 0 ) std::cout << nbs[0] << " ";
     if ( nbs[1] >= 0 ) std::cout << nbs[1] << " ";
     if ( nbs[2] >= 0 ) std::cout << nbs[2] << " ";
@@ -195,6 +195,31 @@ std::vector<int> Maze::solve() const {
         src_dest_t otherVal = s.read();
         int newSrc = otherVal.first; // previous space
         int newDest = otherVal.second; // where you were headed
+
+        if(_mazeCopy[newDest].neighbors[0] != VACANT && _mazeCopy[dest].neighbors[0] != newSrc){
+            nIndex = 0;
+            hasOptions = true;
+        }
+
+        else if(_mazeCopy[newDest].neighbors[1] != VACANT && _mazeCopy[dest].neighbors[1] != newSrc){
+            nIndex = 1;
+            hasOptions = true;
+        }
+
+        else if(_mazeCopy[newDest].neighbors[2] != VACANT && _mazeCopy[dest].neighbors[2] != newSrc){
+            nIndex = 2;
+            hasOptions = true;
+        }
+
+        else if(_mazeCopy[newDest].neighbors[3] != VACANT && _mazeCopy[dest].neighbors[3] != newSrc){
+            nIndex = 3;
+            hasOptions = true;
+        }
+
+        else{
+          cout << "ERROR IN do while for the solve function when popping back" << endl;
+        }
+
         /*
         THIS CODE MAY WORK DON"T COMMENT OUT BRO
         if (_mazeCopy[dest].neighbors[0] != VACANT && _mazeCopy[dest].neighbors[0] == src){
@@ -263,22 +288,21 @@ std::vector<int> Maze::solve() const {
       currentCell = _mazeCopy[src];
       */ 
     
-
+      /
 
   }//end of while statement
 
   vector <int> path;
   vector <int> :: iterator it;
 
-//  it = path.begin();
+  it = path.begin();
 
   //inserts into the path array 
-//  while(!s.empty()){
- //   it = path.insert(it, s.pop().second);
- // }  
+  while(!s.empty()){
+    it = path.insert(it, s.pop().second);
+  }  
 
  // cout << path.size() << endl;
-
   return path; 
 }
 
