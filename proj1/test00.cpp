@@ -22,7 +22,10 @@ int main() {
   auto path = mz.solve();
 
   cout << "the solution to this maze is below" << endl;
-  
+
+  if (path.empty())
+    cout << "path is empty" << endl;
+
   for (auto x : path) {
     std::cout << x << std::endl;
   }

@@ -147,7 +147,6 @@ public:
  //private vars for the maze class  
  private:
   cell_t *_maze;
-  //cell_t *_mazeCopy;
 
 
   int _ncell;
