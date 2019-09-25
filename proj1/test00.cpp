@@ -18,13 +18,18 @@ int main() {
   mz.readFile("data5x5.txt");
   
   mz.dump();
+  
+  cout << "[*] Start of call to solve()..." << endl;
+  auto path = mz.solve();  
+  
+  if (path.empty()){
+    cout << "[-] No solution found." << endl;
+  }
 
-  auto path = mz.solve();
+  else{
+    cout << "[+] Solution found!" << endl;
+  }
 
-  cout << "the solution to this maze is below" << endl;
-
-  if (path.empty())
-    cout << "path is empty" << endl;
 
   for (auto x : path) {
     std::cout << x << std::endl;

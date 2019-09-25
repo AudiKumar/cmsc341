@@ -135,8 +135,6 @@ public:
     void push(src_dest_t src_dest);
     src_dest_t pop();
     src_dest_t read() const;
-
-
   
   //private vars of the solve stacks  
   private:
@@ -151,8 +149,6 @@ public:
 
   int _ncell;
 
-  //gets the NIndex of the  returns either 1, 2, 3 or 4
-  int getNIndex(int destIndex,  int src, cell_t* _mazeCopy) const;
   //
   // MAY ADD PRIVATE FUNCTION PROTOTYPES HERE
   //

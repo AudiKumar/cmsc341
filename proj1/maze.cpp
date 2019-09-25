@@ -99,150 +99,95 @@ void Maze::dump() const {
 }
 
 std::vector<int> Maze::solve() const {
-
-  //makes a local copy for the solve fn 
+  //makes a local copy of the maze 
   cell_t _mazeCopy[getNcell()];
   for (int x = 0; x < getNcell(); x++){
     _mazeCopy[x] = _maze[x];
   }
-
+  
+  //declares the SolveStack, and pushes the (-1, 0) into the stack
+  //also sets a local prev and curr variable to the first and second of the stack
   Maze :: SolveStack s;
-   
   s.push(pair <int,int>(VACANT, 0));
-  int src = s.read().first;
-  int dest = s.read().second;
+  int prev = s.read().first;
+  int curr = s.read().second;
 
-  cell_t currentCell = _mazeCopy[dest];
-  int nIndex = 0;
-  
-  //FIGURE OUT THE N INDEX 
+  //while the current index is not equal to the end of the maze and
+  //the stack is not empty keep looking for a solution 
+  while (curr != getNcell() - 1 && s.empty() == false){
 
-  //first in the pair is previous seccond in the path is curr
-  while (dest != getNcell()-1 && s.empty() == false){
+    //local neighbor var for making the code look better
+    neighbor_t n = _mazeCopy[s.read().second].neighbors;
+   
+    //loops through all of the all of the neighbhors until an option is found
+    //that is not the previous cell 
+    for (unsigned int i = 0; i < n.size(); i++){ 
+      if(n[i] != VACANT && n[i] != prev){
+       prev = curr;
+       curr = n[i];
+       s.push(pair<int, int>(prev, curr));
+       break; 
+      }
+   }
     
-    //"src(prev)" << src << endl; 
-    //currentCell = _mazeCopy[dest];
-  //  cout << "src: " << src << "\ndest: " << dest << "\nNeighbhors: " << endl;
-    //for (int i = 0; i < 4; i++){
-     // cout << "Neighbhor " << i + 1 << _mazeCopy[dest].neighbors[i] << endl;  
-    //}   
-    neighbor_t n = currentCell.neighbors;
-    //cout <<"in loop " << endl;
-
-    if (n[0] >= 0 && n[0] != src ){
-      src = dest;
-      dest = n[0];
-      nIndex = 0; // keeps track if the neighbor index to be used in the pop else
-      s.push(pair <int, int>(src, dest));
-      //cout << src << "     " << dest << endl;
-      currentCell = _mazeCopy[dest]; 
-    }
-
-    else if (n[1] >= 0 && n[1] != src ){
-      //cout <<"asdfasdf" <<endl;
-      src = dest;
-      dest = n[1];
-      nIndex = 1; // keeps track if the neighbor index to be used in the pop else
-      s.push(pair <int, int>(src, dest));
-      //cout << src << "     " << dest << endl;
-    //  if (!s.empty()){
-      //    cout << "stack incremented" << endl;
-     // }
-      currentCell = _mazeCopy[dest]; 
-  
-    }
-
-    else if (n[2] >= 0 && n[2] != src ){
-      src = dest;
-      dest = n[2];
-      nIndex = 2; // keeps track if the neighbor index to be used in the pop else
-      s.push(pair <int, int>(src, dest));
-      currentCell = _mazeCopy[dest];
-      //if (!s.empty()){
-       //   cout << "stack incremented" << endl;
-      //}  
-    }
-
-    else if  (n[3] >= 0 && n[3] != src ){
-      src = dest;
-      dest = n[3];
-      nIndex = 3; // keeps track if the neighbor index to be used in the pop else
-      s.push(pair <int, int>(src, dest));
-      currentCell = _mazeCopy[dest];
-
-      //if (!s.empty()){
-      //    cout << "stack incremented" << endl;
-      //} 
-    }
-
-    //treached when you need to pop stacks
-    else{
-
-      //cout << "nIndex: "<< nIndex << "    value:" << _mazeCopy[dest].neighbors[nIndex] << endl;
-      bool hasOptions = false;
-
-      do{          
-
+    //popping back conditional: while the bool flag hasOption is false
+    //, the stack is not empty and the curr is not at the end the loop
+    //will execute  
+    bool hasOption = false;
+    while(hasOption == false && s.empty() == false && curr != getNcell() - 1){
+      neighbor_t n2 = _mazeCopy[s.read().second].neighbors; 
+      
+      //checks to see if the top of the stack has an option for a path
+      //that isn't the prev if it does the has option flag is flipped 
+      //which leads to nothing being popped 
+      for (unsigned int x = 0; x < n2.size(); x++){
+       if (n2[x] != VACANT && n2[x] != prev){
+          hasOption = true;
+          break;      
+       }
+      } 
+      
+      //if you are at a dead end and the stack is not empty
+      //pop from the top of the stack and set the curr and prev
+      //to the "new values" at the top and mark a path as vacant
+      if (hasOption == false && s.empty() == false){
         src_dest_t popVal = s.pop();
-        src = popVal.first; //previous
-        dest = popVal.second; //current
-
-        int nIndex = getNIndex(dest, src, _mazeCopy);
-
-        _mazeCopy[dest].neighbors[nIndex] = VACANT;
-
-        //check all four spots and flip the boolean if you find an index 
-        // that isn't -1 or equal to the dest's prev
-        //keep going back until you have other options besides go back 
         if (s.empty() == false){
-
-          src_dest_t otherVal = s.read();
-          int newSrc = otherVal.first; // previous space
-          int newDest = otherVal.second; // where you were headed
-
-          if(_mazeCopy[newDest].neighbors[0] > VACANT && _mazeCopy[dest].neighbors[0] != newSrc ){
-            nIndex = 0;
-            hasOptions = true;
+          neighbor_t n2 = _mazeCopy[s.read().second].neighbors;
+          for (unsigned int i = 0; i < n2.size(); i++){
+          
+            if (n2[i] == popVal.second){
+              _mazeCopy[s.read().second].neighbors[i] = VACANT;
+              curr = s.read().second;
+              prev = s.read().first;
+            }
           }
-          else if(_mazeCopy[newDest].neighbors[1] > VACANT && _mazeCopy[dest].neighbors[1] != newSrc){
-            nIndex = 1;
-            hasOptions = true;
-          }
-          else if(_mazeCopy[newDest].neighbors[2] > VACANT && _mazeCopy[dest].neighbors[2] != newSrc){
-            nIndex = 2;
-            hasOptions = true;
-          }
-          else if(_mazeCopy[newDest].neighbors[3] > VACANT && _mazeCopy[dest].neighbors[3] != newSrc){
-            nIndex = 3;
-            hasOptions = true;
-          }
-          else{
-            cout << "ERROR IN do while for the solve function when popping back" << endl;
-          }
-
-          currentCell = _mazeCopy[dest]; 
         }
+      }
+    }
+  }//end of while loop  
+
+  
+  
+  Maze :: SolveStack t;
+  vector<int> path;
 
 
-      }while(hasOptions == false && s.empty() == false);
-
-
-    }// end of popback else
-  }//end of solve stack while loop
-
-
-  vector <int> path;
-  vector <int> :: iterator it;
-
-  it = path.begin();
+  
 
   //inserts into the path array 
   while(!s.empty()){
-    it = path.insert(it, s.pop().second);
+    t.push(s.pop()); 
   }  
+
+  while (!t.empty()){
+    path.push_back(t.pop().second);
+  }
+ 
 
  // cout << path.size() << endl;
   return path; 
+
 }
 
 Maze::SolveStack::SolveStack() {
@@ -301,32 +246,6 @@ src_dest_t Maze::SolveStack::read() const {
     
 }
 
-
-int Maze :: getNIndex(int dest, int src, cell_t* _mazeCopy) const{
-  int nIndex;
-  
-  //check all of the neighbhors and see if it it == to the current [dest]
-  if (_mazeCopy[dest].neighbors[0] == src){
-    nIndex = 0;
-  }
-
-  //check all of the neighbhors and see if it it == to the current [dest]
-  if (_mazeCopy[dest].neighbors[1] == src){
-    nIndex = 1;
-  }
-
-  //check all of the neighbhors and see if it it == to the current [dest]
-  if (_mazeCopy[dest].neighbors[2] == src){
-    nIndex = 2;
-  }
-
-  
-  if (_mazeCopy[dest].neighbors[3] == src){
-    nIndex = 3;
-  } 
-
-  return nIndex;
-}
 
 
 

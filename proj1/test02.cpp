@@ -49,8 +49,18 @@ int main() {
   mz.insert(MazeCell(15, 11));
 
   mz.dump();
-
+  cout << "[*] Start of call to solve()..." << endl;
   auto path = mz.solve();
+  
+  if (path.empty()){
+    cout << "[-] No solution found." << endl;
+
+  }
+
+  else{
+    cout << "[+] Solution found!" << endl;
+  }
+
 
   for (auto x : path) {
     std::cout << x << std::endl;
