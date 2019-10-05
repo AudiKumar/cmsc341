@@ -4,6 +4,10 @@
 #include <vector>
 #include <array>
 
+//custom includes to make the code work
+#include <cmath>
+#include <iostream>
+
 // RAQ Class implements the Dynamic Programming solution
 
 class RAQ {
@@ -27,13 +31,13 @@ class RAQ {
   void dump() const;
   
  private:
-
+  
   // ******************************************************
   // **
   // **  Define the class variables here
   // **
   // ******************************************************
-
+  std :: vector <std :: vector <float> > raqObject;
   // ******************************************************
   // **
   // ** Declare private helper functions here
@@ -59,7 +63,7 @@ public:
 
   // Query the BlockRAQ for interval [i, j]
   float query(int i, int j) const;
-  
+
   // Dump the BlockRAQ data structure to stdout
   void dump() const;
   
@@ -70,7 +74,7 @@ public:
   // **  Define the class variables here
   // **
   // ******************************************************
-
+  std :: vector <std :: vector <float> > blockRaqObject;
   // ******************************************************
   // **
   // ** Declare private helper functions here

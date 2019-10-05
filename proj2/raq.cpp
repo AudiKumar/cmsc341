@@ -12,17 +12,22 @@ using namespace std;
  *              Programming and Block Decomposition.
  *
  *              YOU'RE MAKEFILE HAS -Wall which will give a warning about test0
- *              JUST IGNORE IT 
+ *              JUST IGNORE IT or remove the issue that is causing the error 
  */
 
 
 // ######################################################
 // RAQ 
 // #####################################################
+
+
+//Creates a RAQ object from a data vector. Performs precomputation for the Dynamic Programming solution.
 RAQ :: RAQ(std::vector<float> data){
 
 }
 
+//Performs a Range Average Query from index i to index j. i and j must be in the range 
+//0 ... n - 1 where n is the length of the data vector
 float RAQ :: query(int i, int j) const{
   float ans = 0;
   return ans;
