@@ -5,8 +5,9 @@
 #include <array>
 
 //custom includes to make the code work
-#include <cmath>
+//#include <cmath>
 #include <iostream>
+#include <iomanip>
 
 // RAQ Class implements the Dynamic Programming solution
 
@@ -74,7 +75,7 @@ public:
   // **  Define the class variables here
   // **
   // ******************************************************
-  std :: vector <std :: vector <float> > blockRaqObject;
+  std :: vector <float> blockRaqObject;
   // ******************************************************
   // **
   // ** Declare private helper functions here

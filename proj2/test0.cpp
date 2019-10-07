@@ -55,16 +55,17 @@ int main() {
 
       float x = avg(data, i, j) ;
       float y = raq.query(i, j) ;
-      float z = braq.query(i, j) ;
+      float z = raq.query(i, j) ;
+      //float z = braq.query(i, j) ;
 
       // Print message if direct computation disagrees with either RAQ
       // or BlockRAQ.  Note: their can be rounding errors, which are
       // not really errors.
       
       if ( (x != y ) || (x != z) ) {
-	cout << "(" << i << ", " << j << "): ";
-	cout << x << "  " << y << "  " << z << endl;
-	err = true;
+	      cout << "(" << i << ", " << j << "): ";
+	      cout << x << "  " << y << "  " << z << endl;
+	      err = true;
       }
     }
   }
