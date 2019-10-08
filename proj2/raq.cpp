@@ -202,9 +202,99 @@ float BlockRAQ :: query(int i, int j) const{
     //query /= diff;
     //return query;
   }
-
+  // if there is more than one block in between 
   else if (blockDiff > 1){
-    //do everything but i and j and just add those in
+    if (i == (iBlock * blockSize) && (j + 1) % blockSize == 0 && (j + 1) != copyData.size()){
+      for (int y = iBlock; y <= jBlock; y++){
+        query += blockRaqObject.at(y) * blockSize;
+      }
+    }
+
+    //checks if i starts at the begining of a block
+    else if (i == (iBlock * blockSize) && (j + 1)!= copyData.size()){ 
+      for (int y = iBlock; y < jBlock; y++){
+        query += blockRaqObject.at(y) * blockSize;
+      }
+
+      //iterate through begining of j block to j
+      for(int x = jBlock * blockSize; x <= j; x++){
+        query += copyData.at(x);
+      }
+    }
+
+    //checks if j is equal to the end of the block
+    else if ((j + 1) % blockSize == 0 && (j + 1) != copyData.size()){
+      //cout <<"asdfasdf" << endl;
+      for (int y = iBlock + 1; y <= jBlock; y++){
+        query += blockRaqObject.at(y) * blockSize;
+      }
+
+      //iterate through i to end of block i
+      for(int x = i; x < ((iBlock*blockSize) + blockSize); x++){
+        query += copyData.at(x);
+      }
+    }
+
+    //if neither i or j is at the begining and end respectivly then you
+    //you need to iterate everything in between i and j and then iter i 
+    //and j
+    else if (i != (iBlock * blockSize) && (j + 1) % blockSize != 0 && (j + 1) != copyData.size()){
+      for (int y = iBlock + 1; y < jBlock; y++){
+        query += blockRaqObject.at(y) * blockSize;
+      }
+
+      for(int x = i; x < ((iBlock*blockSize) + blockSize); x++){
+        query += copyData.at(x);
+      }
+
+      //iterate through begining of j block to j
+      for(int x = jBlock * blockSize; x <= j; x++){
+        query += copyData.at(x);
+      }
+    }
+
+
+    //if j is equal to the size the you will need to do what you did before 
+    //do the checks for i first and add it to the query accordingly then 
+    //check to see if j is normal if it is then add it via the block
+    //otherwise iterate until you get to through the j block and add it
+    //query  
+    else{
+      //if if the j block is normal and not werid proceed as normal
+      if ((j + 1) % blockSize == 0){
+        
+        // if i is at the begining of a block
+        if(i == (iBlock * blockSize)){
+          for (int y = iBlock; y <= jBlock; y++){
+            query += blockRaqObject.at(y) * blockSize;
+          }
+        }
+
+        //else mean thats i is not as the begining of a block but j is so
+        //get the blocks from i + 1 to j and then sum up the contents of i
+        else{
+          for (int y = iBlock + 1; y <= jBlock; y++){
+            query += blockRaqObject.at(y) * blockSize;
+          }
+
+          //iterate through begining of i block to i
+          for(int x = i; x < ((iBlock*blockSize) + blockSize); x++){
+            query += copyData.at(x);
+          }
+
+        }
+
+      }
+
+      else{
+          //iterate through begining of i block to i
+          for(int x = i; x < ((iBlock*blockSize) + blockSize); x++){
+            query += copyData.at(x);
+          }
+      }
+
+    }
+
   }
 
   query /= diff;

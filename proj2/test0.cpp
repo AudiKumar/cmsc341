@@ -16,9 +16,12 @@ float avg(vector<float> data, int i, int j);
 int main() {
 
   // This is the data from the project description
+  /* 
   vector<float> data = {34, 16, 58, -24, 53,
 			7, 97, 92, -12, 45,
 			9, 0, -1, 20, 77};
+  */
+    vector<float> data = { 16, 58, -24, 53, 7, 97, 92, -12, 45, 9, 0, -1, 20, 77};
 
   // Print the test data
   
@@ -55,8 +58,8 @@ int main() {
 
       float x = avg(data, i, j) ;
       float y = raq.query(i, j) ;
-      float z = raq.query(i, j) ;
-      //float z = braq.query(i, j) ;
+      //float z = raq.query(i, j) ;
+      float z = braq.query(i, j) ;
 
       // Print message if direct computation disagrees with either RAQ
       // or BlockRAQ.  Note: their can be rounding errors, which are
@@ -73,10 +76,25 @@ int main() {
   if (!err) {
     cout << "No errors.\n";
   }
-  
+  /*
   cout << "\n\n################################################################################" << endl;
   cout << "this is your own testing for braq you will need to remove this later" << endl;
   cout << "\t*************************************" << endl;
+  cout << "\tblock diff > 1" << endl;
+
+  cout << "\t\ttest 1: the full blocks testing " << endl;
+  cout << "\t\t(0, 8): " << "\n\t\t\tavg: " << avg(data, 0, 8); 
+  cout << "\n\t\t\traq: " << raq.query(0, 8) << "\n\t\t\tbraq: " << braq.query(0, 8) << endl; 
+
+  cout << "\t\ttest 2: i is at the begining of a block and j is just somewhere in the other block" << endl;
+  cout << "\t\t(0, 6): " << "\n\t\t\tavg: " << avg(data, 0, 6); 
+  cout << "\n\t\t\traq: " << raq.query(0, 6) << "\n\t\t\tbraq: " << braq.query(0, 6) << endl;
+
+  cout << "\t\ttest 3: j is at the end of a block and i is not at the end" << endl;
+  cout << "\t\t(4, 11): " << "\n\t\t\tavg: " << avg(data, 4, 11); 
+  cout << "\n\t\t\traq: " << raq.query(4, 11) << "\n\t\t\tbraq: " << braq.query(4, 11) << endl;
+
+  
   cout << "\tin the same block testing" << endl;
   cout << "\t\ttest 1: first the full block testing " << endl; 
   cout << "\t\t(0, 2): " << "\n\t\t\tavg: " << avg(data, 0, 2); 
@@ -109,7 +127,7 @@ int main() {
   cout << "\t\t(9, 14): " << "\n\t\t\tavg: " << avg(data, 9, 14); 
   cout << "\n\t\t\traq: " << raq.query(9, 14) << "\n\t\t\tbraq: " << braq.query(9, 14) << endl;
 
-
+  */
 
 
   return 0;
