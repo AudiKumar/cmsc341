@@ -124,29 +124,30 @@ float BlockRAQ :: query(int i, int j) const{
   
       }
       query /= diff;
-      return query;
     }
+    return query;
   }
 
   //if block loc is 1 they are in different blocks so check if its a full block
   //when its a full block add the full block and then i and j when it isn't a 
   //full block then you will want just iterate through it
   else if(blockDiff == 1){
+    
     //checks if i and j are just two full blocks
-    if (i == (iBlock * blockSize) && j + 1 % blockSize == 0){
+    if (i == (iBlock * blockSize) && (j + 1) % blockSize == 0){
+      //cout << "\n\n test 1" << endl;
       query = query + (blockRaqObject.at(jBlock) * blockSize);
       query = query + (blockRaqObject.at(iBlock) * blockSize);
     }
     //checks if i starts at the begining of a block
     else if (i == (iBlock * blockSize)){
       query = query + (blockRaqObject.at(iBlock) * blockSize);
-
       for (int x = (jBlock * blockSize); x <= j; x++){
         query += copyData.at(x);
       }
     }
     //if j is equal to the end of the block
-    else if (j + 1 % blockSize == 0){
+    else if ((j + 1) % blockSize == 0){
       query = query + (blockRaqObject.at(jBlock)* blockSize);
 
       for (int x = (iBlock * blockSize); x <= i; x++){
@@ -156,11 +157,13 @@ float BlockRAQ :: query(int i, int j) const{
 
     // if there isn't a full block of distance between it but they are in different blocks you just have to iterate through
     else{
+      cout << "asfdasdf" << endl;
       for (int x = i; x <= j; x++){
         query += copyData.at(x);
       }
-      
     }
+    query /= diff;
+    return query;
   }
 
 

@@ -77,14 +77,18 @@ int main() {
   cout << "this is your own testing for braq you will need to remove this later" << endl;
   cout << "\t*************************************" << endl;
   cout << "\tin the same block testing" << endl;
-  cout << "\t\tfirst the full block testing " << endl; 
+  cout << "\t\ttest 1: first the full block testing " << endl; 
   cout << "\t\t(0, 2): " << "\n\t\t\tavg: " << avg(data, 0, 2); 
-  cout << "\n\t\t\traq: " << raq.query(0, 2) << "\n\t\t\tbraq: " << braq.query(0, 2) << endl; ;
-  cout << "\t\tnow unto in block testing" << endl;
+  cout << "\n\t\t\traq: " << raq.query(0, 2) << "\n\t\t\tbraq: " << braq.query(0, 2) << endl;
+  cout << "\t\ttest 2: now unto in block testing" << endl;
   cout << "\t\t(0, 1): " << "\n\t\t\tavg: " << avg(data, 0, 1); 
   cout << "\n\t\t\traq: " << raq.query(0, 1) << "\n\t\t\tbraq: " << braq.query(0, 1) << endl; 
 
-  cout << "\tblock diff of 1" << endl;
+  cout << "\tblock diff of 1 (5 tests)" << endl;
+  cout << "\t\ttest 1: i is at the begining of a block and j is at the end of a block" << endl;
+  cout << "\t\t(3, 8): " << "\n\t\t\tavg: " << avg(data, 3, 8); 
+  cout << "\n\t\t\traq: " << raq.query(3, 8) << "\n\t\t\tbraq: " << braq.query(3, 8) << endl;
+
 
 
 
