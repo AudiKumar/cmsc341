@@ -73,6 +73,7 @@ int main() {
   if (!err) {
     cout << "No errors.\n";
   }
+  
   cout << "\n\n################################################################################" << endl;
   cout << "this is your own testing for braq you will need to remove this later" << endl;
   cout << "\t*************************************" << endl;
@@ -102,6 +103,11 @@ int main() {
   cout << "\t\ttest 4: i and j blocks next to each other" << endl;
   cout << "\t\t(4, 7): " << "\n\t\t\tavg: " << avg(data, 4, 7); 
   cout << "\n\t\t\traq: " << raq.query(4, 7) << "\n\t\t\tbraq: " << braq.query(4, 7) << endl;
+
+  
+  cout << "\t\ttest 5: when j at the end" << endl;
+  cout << "\t\t(9, 14): " << "\n\t\t\tavg: " << avg(data, 9, 14); 
+  cout << "\n\t\t\traq: " << raq.query(9, 14) << "\n\t\t\tbraq: " << braq.query(9, 14) << endl;
 
 
 
