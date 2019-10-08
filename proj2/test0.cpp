@@ -80,6 +80,7 @@ int main() {
   cout << "\t\ttest 1: first the full block testing " << endl; 
   cout << "\t\t(0, 2): " << "\n\t\t\tavg: " << avg(data, 0, 2); 
   cout << "\n\t\t\traq: " << raq.query(0, 2) << "\n\t\t\tbraq: " << braq.query(0, 2) << endl;
+  
   cout << "\t\ttest 2: now unto in block testing" << endl;
   cout << "\t\t(0, 1): " << "\n\t\t\tavg: " << avg(data, 0, 1); 
   cout << "\n\t\t\traq: " << raq.query(0, 1) << "\n\t\t\tbraq: " << braq.query(0, 1) << endl; 
@@ -88,6 +89,19 @@ int main() {
   cout << "\t\ttest 1: i is at the begining of a block and j is at the end of a block" << endl;
   cout << "\t\t(3, 8): " << "\n\t\t\tavg: " << avg(data, 3, 8); 
   cout << "\n\t\t\traq: " << raq.query(3, 8) << "\n\t\t\tbraq: " << braq.query(3, 8) << endl;
+  
+  cout << "\t\ttest 2: i is at the begining of a block and j is just somewhere in the other block" << endl;
+  cout << "\t\t(3, 7): " << "\n\t\t\tavg: " << avg(data, 3, 7); 
+  cout << "\n\t\t\traq: " << raq.query(3, 7) << "\n\t\t\tbraq: " << braq.query(3, 7) << endl;
+
+
+  cout << "\t\ttest 3: i is just somewhere in the block and j is at the end of a block" << endl;
+  cout << "\t\t(4, 8): " << "\n\t\t\tavg: " << avg(data, 4, 8); 
+  cout << "\n\t\t\traq: " << raq.query(4, 8) << "\n\t\t\tbraq: " << braq.query(4, 8) << endl;
+
+  cout << "\t\ttest 4: i and j blocks next to each other" << endl;
+  cout << "\t\t(4, 7): " << "\n\t\t\tavg: " << avg(data, 4, 7); 
+  cout << "\n\t\t\traq: " << raq.query(4, 7) << "\n\t\t\tbraq: " << braq.query(4, 7) << endl;
 
 
 

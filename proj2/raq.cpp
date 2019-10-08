@@ -116,7 +116,7 @@ float BlockRAQ :: query(int i, int j) const{
     if(j + 1 % blockSize == 0){
       query = blockRaqObject.at(jBlock);
     }
-    //if it's not a full block iterate through
+    //if it's not a fufll block iterate through
     else{
       for (int x = i; x <= j; x++){
         //cout << "in loop" << endl;
@@ -141,6 +141,7 @@ float BlockRAQ :: query(int i, int j) const{
     }
     //checks if i starts at the begining of a block
     else if (i == (iBlock * blockSize)){
+      //cout << "\n\n test 2" << endl;
       query = query + (blockRaqObject.at(iBlock) * blockSize);
       for (int x = (jBlock * blockSize); x <= j; x++){
         query += copyData.at(x);
@@ -148,16 +149,19 @@ float BlockRAQ :: query(int i, int j) const{
     }
     //if j is equal to the end of the block
     else if ((j + 1) % blockSize == 0){
+      //cout << "\n\n test 3" << endl;
       query = query + (blockRaqObject.at(jBlock)* blockSize);
-
-      for (int x = (iBlock * blockSize); x <= i; x++){
+      //cout << "blockRAQObject at " << jBlock << " summed : " << query << endl;
+      for (int x = i; x < ((iBlock*blockSize) + blockSize); x++){
+      //for (int x = (iBlock * blockSize); x <= i; x++){ going up to i not from i
+        //cout << "at index " << x << ": " << copyData.at(x) << endl;
         query += copyData.at(x);
       }
     }
 
     // if there isn't a full block of distance between it but they are in different blocks you just have to iterate through
     else{
-      cout << "asfdasdf" << endl;
+      //cout << "test 4" << endl;
       for (int x = i; x <= j; x++){
         query += copyData.at(x);
       }
