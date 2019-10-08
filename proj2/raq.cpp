@@ -29,7 +29,7 @@ using namespace std;
 //Creates a RAQ object from a data vector. Performs precomputation for the Dynamic Programming solution.
 //precomputation = doing all of the possible ranges and storing in the raqObj
 RAQ :: RAQ(std::vector<float> data){
-
+ 
   //loops through data and inserts it
   //b/c you are working with floats you will want to cast to float for your rows and cols
   for (unsigned int i = 0; i < data.size(); i++){
@@ -72,17 +72,150 @@ void RAQ :: dump() const{
 // ######################################################
 // BlockRAQ
 // #####################################################
+
+
 BlockRAQ :: BlockRAQ(std::vector<float> data){
+  //loop through the data and if the index is divisable by the size then you 
+  //(size % i == 0) you treat that is the block and average the range (size / i 
+  // = the ammount of variables in the block)
+  blockSize = (int) sqrt((float) data.size());
+  copyData = data; 
+  cout << "blockSize " << blockSize << endl;
+  float sum = 0;
+  
+  for (int i = 0; i < data.size(); i++){
+    sum += data.at(i);
+    if(i > 0  && (i + 1) % blockSize == 0){
+      blockRaqObject.push_back(sum / blockSize);
+      sum = 0; 
+    }
+  }//end of for loop
 
 }
 
 float BlockRAQ :: query(int i, int j) const{
-  float ans = 0;
-  return ans;
+
+
+
+  //loop either through iteration or boolean flag.
+  //check where i and j is in terms of blocks (helper?)
+  float query = 0;
+  bool isDone = false;
+  int iBlock = i / blockSize;
+  int jBlock = j / blockSize;
+  int blockDiff = jBlock - iBlock;
+  int diff = (j - i) + 1;
+
+
+  //cout << "i: " << i << " j: "  << j << " blockDiff: " << blockDiff << endl;
+
+  //if blockDiff is == 0: i and j are in the same block so just iterate from i 
+  //to j and average them through dividing with diff
+  if (blockDiff == 0){
+    //returns the block is its a full block
+    if(j + 1 % blockSize == 0){
+      query = blockRaqObject.at(jBlock);
+    }
+    //if it's not a full block iterate through
+    else{
+      for (int x = i; x <= j; x++){
+        //cout << "in loop" << endl;
+        query += copyData.at(x);
+  
+      }
+      query /= diff;
+      return query;
+    }
+  }
+
+  //if block loc is 1 they are in different blocks so check if its a full block
+  //when its a full block add the full block and then i and j when it isn't a 
+  //full block then you will want just iterate through it
+  else if(blockDiff == 1){
+    //checks if i and j are just two full blocks
+    if (i == (iBlock * blockSize) && j + 1 % blockSize == 0){
+      query = query + (blockRaqObject.at(jBlock) * blockSize);
+      query = query + (blockRaqObject.at(iBlock) * blockSize);
+    }
+    //checks if i starts at the begining of a block
+    else if (i == (iBlock * blockSize)){
+      query = query + (blockRaqObject.at(iBlock) * blockSize);
+
+      for (int x = (jBlock * blockSize); x <= j; x++){
+        query += copyData.at(x);
+      }
+    }
+    //if j is equal to the end of the block
+    else if (j + 1 % blockSize == 0){
+      query = query + (blockRaqObject.at(jBlock)* blockSize);
+
+      for (int x = (iBlock * blockSize); x <= i; x++){
+        query += copyData.at(x);
+      }
+    }
+
+    // if there isn't a full block of distance between it but they are in different blocks you just have to iterate through
+    else{
+      for (int x = i; x <= j; x++){
+        query += copyData.at(x);
+      }
+      
+    }
+  }
+
+
+
+
+  /*
+  // if block loc is 0 (in the same block)
+  if (blockLocDiff == 0){  //&& jBlockLoc != blockRaqObject.size() - 1){
+    for (int x = i; x <= j; x++){
+      query += copyData.at(x); 
+    }
+
+   //cout << "diff: " << diff << "\n\n\n"; 
+   query = query/diff;
+   return query;
+  }
+
+  else if(blockLocDiff == 1){
+    //if the indexdiff is a mod of the block size then sum blocks
+    if (diff % blockSize == 0){
+
+    }
+    return 
+
+  }
+
+  // if block locs are == 1 
+  //if the block locs are greater than 1
+
+  else if(blockLocDiff > 1){ //&& jBlockLoc != blockRaqObject.size() - 1){
+    //cout << "jBlock: "<< jBlockLoc << "iBlock: " << iBlockLoc;
+    //iterate over the blocks that are not iBlockLock and jBlockLoc and sum them
+    for (int y = iBlockLoc + 1; y < jBlockLoc; y++){
+      query += blockRaqObject.at(y) * blockSize;
+    }
+
+    for(int x = iBlockLoc * blockSize; x <= i; x++){
+      query += copyData.at(x);
+    }
+
+    for(int z = jBlockLoc * blockSize; z <= j; z++){
+      query += copyData.at(z); 
+    }
+    query = query / ((j - i) - 1);
+  }
+  */
+
+  return query ;
 }
 
 void BlockRAQ :: dump () const{
-
+  for (int x = 0; x < blockRaqObject.size(); x++){
+    cout << blockRaqObject.at(x) << "  ";
+  }
+  cout << endl;
 }
 
 // helpers for BlockRAQ

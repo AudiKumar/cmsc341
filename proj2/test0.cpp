@@ -73,6 +73,20 @@ int main() {
   if (!err) {
     cout << "No errors.\n";
   }
+  cout << "\n\n################################################################################" << endl;
+  cout << "this is your own testing for braq you will need to remove this later" << endl;
+  cout << "\t*************************************" << endl;
+  cout << "\tin the same block testing" << endl;
+  cout << "\t\tfirst the full block testing " << endl; 
+  cout << "\t\t(0, 2): " << "\n\t\t\tavg: " << avg(data, 0, 2); 
+  cout << "\n\t\t\traq: " << raq.query(0, 2) << "\n\t\t\tbraq: " << braq.query(0, 2) << endl; ;
+  cout << "\t\tnow unto in block testing" << endl;
+  cout << "\t\t(0, 1): " << "\n\t\t\tavg: " << avg(data, 0, 1); 
+  cout << "\n\t\t\traq: " << raq.query(0, 1) << "\n\t\t\tbraq: " << braq.query(0, 1) << endl; 
+
+  cout << "\tblock diff of 1" << endl;
+
+
 
   return 0;
 }

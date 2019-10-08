@@ -4,10 +4,7 @@
 #include <vector>
 #include <array>
 
-//custom includes to make the code work
-//#include <cmath>
-#include <iostream>
-#include <iomanip>
+
 
 // RAQ Class implements the Dynamic Programming solution
 
@@ -52,7 +49,7 @@ class RAQ {
 class BlockRAQ {
 public:
   // Create the BlockRAQ object; perform precomputation
-  BlockRAQ(std::vector<float> data);
+  BlockRAQ(std::vector<float> data); // needs to iterate through the matrix and clear it all
 
   // ******************************************************
   // **
@@ -69,19 +66,21 @@ public:
   void dump() const;
   
  private:
-  
+
   // ******************************************************
   // **
   // **  Define the class variables here
   // **
   // ******************************************************
   std :: vector <float> blockRaqObject;
+  int blockSize; //(int) sqrt((float) n).
+  std :: vector <float> copyData; 
   // ******************************************************
   // **
   // ** Declare private helper functions here
   // **
   // ******************************************************  
-
+ 
 };
 
 
