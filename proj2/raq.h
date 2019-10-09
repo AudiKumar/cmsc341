@@ -36,6 +36,7 @@ class RAQ {
   // **
   // ******************************************************
   std :: vector <std :: vector <float> > raqObject;
+  std :: vector <float> copyData; 
   // ******************************************************
   // **
   // ** Declare private helper functions here
@@ -50,6 +51,7 @@ class BlockRAQ {
 public:
   // Create the BlockRAQ object; perform precomputation
   BlockRAQ(std::vector<float> data); // needs to iterate through the matrix and clear it all
+  
 
   // ******************************************************
   // **

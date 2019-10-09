@@ -4,6 +4,8 @@
 #include <cmath>
 #include <iostream>
 #include <iomanip>
+#include <stdexcept>
+
 using namespace std;
 /*
  * Name: Aditya Krishna Yerraguntla Kumar
@@ -29,7 +31,7 @@ using namespace std;
 //Creates a RAQ object from a data vector. Performs precomputation for the Dynamic Programming solution.
 //precomputation = doing all of the possible ranges and storing in the raqObj
 RAQ :: RAQ(std::vector<float> data){
- 
+  copyData = data;
   //loops through data and inserts it
   //b/c you are working with floats you will want to cast to float for your rows and cols
   for (unsigned int i = 0; i < data.size(); i++){
@@ -48,9 +50,17 @@ RAQ :: RAQ(std::vector<float> data){
   }
 }
 
+
 //Performs a Range Average Query from index i to index j. i and j must be in the range 
 //0 ... n - 1 where n is the length of the data vector
 float RAQ :: query(int i, int j) const{
+  if (i < 0 || i > copyData.size()){
+    throw std::domain_error("RAQ: i is not in the range of the RAQ");
+  }
+
+  if (j < 0 || j > copyData.size()){
+    throw std::domain_error("RAQ: i is not in the range of the RAQ");
+  }
   int diff = (j - i);
   return raqObject[i][diff];
 } 
@@ -95,7 +105,13 @@ BlockRAQ :: BlockRAQ(std::vector<float> data){
 
 float BlockRAQ :: query(int i, int j) const{
 
+  if (i < 0 || i > copyData.size()){
+    throw std::domain_error("RAQ: i is not in the range of the blockRAQ");
+  }
 
+  if (j < 0 || j > copyData.size()){
+    throw std::domain_error("RAQ: i is not in the range of the blockRAQ");
+  }
 
   //loop either through iteration or boolean flag.
   //check where i and j is in terms of blocks (helper?)
@@ -288,7 +304,7 @@ float BlockRAQ :: query(int i, int j) const{
 
       else{
           //iterate through begining of i block to i
-          for(int x = i; x < ((iBlock*blockSize) + blockSize); x++){
+          for(int x = i; x <= j ; x++){
             query += copyData.at(x);
           }
       }

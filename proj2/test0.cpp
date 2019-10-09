@@ -38,6 +38,12 @@ int main() {
   RAQ raq(data);
   raq.dump();
 
+  cout << "copy" << endl;
+  RAQ copy = raq;
+  copy.dump();
+
+  
+  
   // Create the BlockRAQ object (does precomputation and dump the data
   // structure
 
