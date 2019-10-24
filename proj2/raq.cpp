@@ -302,6 +302,7 @@ float BlockRAQ :: query(int i, int j) const{
 
       }
 
+      //this is when the block is werid
       else{
           //iterate through begining of i block to i
           for(int x = i; x <= j ; x++){
