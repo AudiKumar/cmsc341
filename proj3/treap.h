@@ -70,6 +70,8 @@ public:
 private:
   TreapNode *_nptr ;        // Pointer to node (data)
 
+  const data_t* findHelper(TreapNode* curr, const data_t& x);
+
   //
   // Private helper functions must be declared here
   //

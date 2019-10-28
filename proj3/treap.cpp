@@ -16,9 +16,13 @@ Treap::Treap(const Treap& other) {
 }
 
 Treap::~Treap() {
-  //
-  // Implement destructor
-  //
+  // this implementations of the destructor assumes that the remove works
+  // bassically will remove the root and rebalance until there's nothing 
+  // there anymore
+  while(_nptr != nullptr){
+    remove(_nptr->_data);
+  }
+
 }
 
 const Treap& Treap::operator=(const Treap& rhs) {
@@ -40,10 +44,39 @@ priority_t Treap::priority() const {
   return _nptr ? _nptr->_pri : numeric_limits<priority_t>::min() ;
 }
 
+//data_t is a typedef of string (a letter) so in order to check 
+/*
+If the data value x is found, find() returns a pointer to the corresponding 
+data value; otherwise it returns nullptr. Your find() method must run in time 
+proportional to the height of the tree.
+*/ 
 const data_t* Treap::find(const data_t& x) {
-  //
-  // Implement find function
-  //
+
+  //base case 1: if the tree is empty then it will return nullptr
+  if ( empty() == true ){
+    return nullptr;
+  }
+  
+  //base case 2: at leaf and x is not the lead return nullptr
+  if ( x != _nptr->_data && _nptr->_left._nptr->_data.empty() && _nptr->_right._nptr->_data.empty()){
+    return nullptr;
+  }
+
+  //base case 3: if you found x return it
+  if(x == _nptr->_data){
+    return &x;
+  }
+
+  //recursive case 1: if x < the current data go to the left child
+  if(_nptr->_data < x ){
+    _nptr->_left.find(x);
+  }
+
+  //recursive case 2: if x > the current data go to the right child 
+  if(_nptr->_data > x){
+    _nptr->_right.find(x);
+  }
+
 }
 
 // Inorder traversal.  Recommend you NOT change this!!!
