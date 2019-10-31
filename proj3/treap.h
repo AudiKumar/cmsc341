@@ -70,11 +70,17 @@ public:
 private:
   TreapNode *_nptr ;        // Pointer to node (data)
 
-  const data_t* findHelper(TreapNode* curr, const data_t& x);
-
-  //
+  //const data_t* findHelper(TreapNode* curr, const data_t& x);
+ //bool hasBothChildern(TreapNode* nodeToCheck); 
+ // bool onlyRightChild(TreapNode* nodeToCheck);
+ // bool onlyLeftChild(TreapNode* nodeToCheck);
+  void rotateDown(TreapNode* nodeToRotate);
+  bool isLeaf(); 
+  TreapNode*  copyHelper(const Treap& other);
+  void rotateRight(TreapNode* parent, TreapNode* leftChild);
+  void roatateLeft(TreapNode* parent, TreapNode* rightChild);
+  TreapNode* findW(TreapNode* y); //finds right's left most, or the left's rightmost
   // Private helper functions must be declared here
-  //
   
 } ;
 
