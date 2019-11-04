@@ -181,10 +181,7 @@ void Treap::insert(const data_t& x, const priority_t& p) {
 }
 
 bool Treap::remove(const data_t& x) {
-  cout << "in remove" << endl;
-  //
-  // Implement treap element removal
-  //
+  bool temp;
   if (empty()){
     return false;
   }
@@ -198,44 +195,39 @@ bool Treap::remove(const data_t& x) {
   }
 
   if(_nptr->_data == x){
-    //cout << "sldkfjslfk" << endl;
     if(_nptr->_left.empty() && _nptr->_right.empty()){
-      //cout << "inside base case" << endl;
       delete _nptr;
       _nptr = nullptr;
       return true; 
     }
     else{
       if (  !(_nptr->_left.empty()) && !(_nptr->_right.empty()) ){
-        if (_nptr->_left.priority() > _nptr->_right.priority() ){
+        
+        //if left is greater do right rotation
+        if (_nptr->_left._nptr->_pri > _nptr->_right._nptr->_pri ){
           rotateRight(_nptr, _nptr->_left._nptr);
-          //_nptr->_left.updateHeight();
-          return _nptr->_left.remove(x); 
+          return _nptr->_right.remove(x); 
         }
+        
+        //else do left rotation
         else{
           roatateLeft(_nptr, _nptr->_right._nptr);
-          //_nptr->_right.updateHeight(_nptr->_left._nptr);
-          return _nptr->_right.remove(x);
+          return _nptr->_left.remove(x);
         }
       }
-      // if there is just a left child right rotation
+      // if there is just a left child right rotation and go down right
       else if(!(_nptr->_left.empty()) && (_nptr->_right.empty())){
-        rotateRight(_nptr, _nptr->_right._nptr);
-        _nptr->_left.updateHeight();
-        //updateHeight(_nptr->_left._nptr);
-        return _nptr->_left.remove(x);
-      }
-
-      //if there is just the right child do a left rotation
-      else if ((_nptr->_left.empty()) && !(_nptr->_right.empty())){
-        roatateLeft(_nptr, _nptr->_right._nptr);
+        rotateRight(_nptr, _nptr->_left._nptr);
         return _nptr->_right.remove(x);
       }
+
+      //if there is just the right child do a left rotation and go down left
+      else if ((_nptr->_left.empty()) && !(_nptr->_right.empty())){
+        roatateLeft(_nptr, _nptr->_right._nptr);
+        return _nptr->_left.remove(x);
+      }
     }
-    //updateHeight();
-    //int leftHeight = _nptr->_left.height();
-    //int rightHeight = _nptr->_right.height();
-    //_nptr->_height = 1 + ( leftHeight > rightHeight ? leftHeight : rightHeight );
+
   }
 
   //if you get to a leaf not and remove is not found then you know the data 
@@ -243,6 +235,8 @@ bool Treap::remove(const data_t& x) {
   if(_nptr == nullptr){
     return false;
   }
+  //may need to comment this out
+  updateHeight();
 
 }
 
@@ -308,6 +302,8 @@ TreapNode*  Treap :: copyHelper(const Treap& other){
 
   //recursive case
   else{
+    _nptr = other._nptr;
+    /*
     if(other._nptr->_left.empty() == false){
       _nptr = new TreapNode(other._nptr->_data, other._nptr->_pri);
       return _nptr->_left._nptr =  copyHelper(other._nptr->_left);
@@ -316,6 +312,7 @@ TreapNode*  Treap :: copyHelper(const Treap& other){
        _nptr = new TreapNode(other._nptr->_data, other._nptr->_pri);
        return _nptr ->_right._nptr = copyHelper(other._nptr->_right);
     }
+    */
   }
 
 }
