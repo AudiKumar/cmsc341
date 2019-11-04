@@ -148,6 +148,7 @@ bool Treap::locate (const char position[], data_t& x, priority_t& p, int& h, int
 void Treap::insert(const data_t& x, const priority_t& p) {
   if ( empty() ) {
     _nptr = new TreapNode(x, p) ;
+    //updateHeight();
   }
 
   if (_nptr->_data < x) { 
@@ -155,22 +156,28 @@ void Treap::insert(const data_t& x, const priority_t& p) {
 
     if(_nptr->_pri < p){
       roatateLeft(_nptr, _nptr->_right._nptr);
+      //_nptr->_right.updateHeight();
+      //updateHeight(_nptr->_right._nptr);
+      //updateHeight(_nptr);
     }
-      
+     //updateHeight(_nptr);   
     
   } else if (x < _nptr->_data ) {
     _nptr->_left.insert(x, p) ;
 
     if(_nptr->_pri < p){
       rotateRight(_nptr, _nptr->_left._nptr);
+      //_nptr->_left.updateHeight();
     }
+
+    //updateHeight();
   }
   // Update height. Maybe this should be a helper function??
   //int leftHeight = _nptr->_left.height();
   //int rightHeight = _nptr->_right.height();
   //_nptr->_height = 1 + ( leftHeight > rightHeight ? leftHeight : rightHeight );
 
-  updateHeight(_nptr);
+  updateHeight();
 }
 
 bool Treap::remove(const data_t& x) {
@@ -183,17 +190,17 @@ bool Treap::remove(const data_t& x) {
   }
 
   if (_nptr->_data < x){
-    _nptr->_right.remove(x);
+    return _nptr->_right.remove(x);
   }
 
   if (_nptr->_data > x){
-    _nptr->_left.remove(x);
+    return _nptr->_left.remove(x);
   }
 
   if(_nptr->_data == x){
-    cout << "sldkfjslfk" << endl;
+    //cout << "sldkfjslfk" << endl;
     if(_nptr->_left.empty() && _nptr->_right.empty()){
-      cout << "inside base case" << endl;
+      //cout << "inside base case" << endl;
       delete _nptr;
       _nptr = nullptr;
       return true; 
@@ -202,30 +209,30 @@ bool Treap::remove(const data_t& x) {
       if (  !(_nptr->_left.empty()) && !(_nptr->_right.empty()) ){
         if (_nptr->_left.priority() > _nptr->_right.priority() ){
           rotateRight(_nptr, _nptr->_left._nptr);
-          _nptr->_left.updateHeight(_nptr->_left._nptr);
-          _nptr->_left.remove(x); 
+          //_nptr->_left.updateHeight();
+          return _nptr->_left.remove(x); 
         }
         else{
           roatateLeft(_nptr, _nptr->_right._nptr);
-          _nptr->_right.updateHeight(_nptr->_left._nptr);
-          _nptr->_right.remove(x);
+          //_nptr->_right.updateHeight(_nptr->_left._nptr);
+          return _nptr->_right.remove(x);
         }
       }
       // if there is just a left child right rotation
       else if(!(_nptr->_left.empty()) && (_nptr->_right.empty())){
         rotateRight(_nptr, _nptr->_right._nptr);
-        //_nptr->_right.updateHeight(_nptr->_left._nptr);
-        _nptr->_left.remove(x);
+        _nptr->_left.updateHeight();
+        //updateHeight(_nptr->_left._nptr);
+        return _nptr->_left.remove(x);
       }
 
       //if there is just the right child do a left rotation
       else if ((_nptr->_left.empty()) && !(_nptr->_right.empty())){
         roatateLeft(_nptr, _nptr->_right._nptr);
-        //updateHeight(_nptr->_left._nptr);
-        _nptr->_right.remove(x);
+        return _nptr->_right.remove(x);
       }
     }
-    //updateHeight(_nptr);
+    //updateHeight();
     //int leftHeight = _nptr->_left.height();
     //int rightHeight = _nptr->_right.height();
     //_nptr->_height = 1 + ( leftHeight > rightHeight ? leftHeight : rightHeight );
@@ -247,10 +254,10 @@ void Treap :: dump() {
 
 
 //helper treaps fns
-void Treap :: updateHeight(TreapNode* node){
+void Treap :: updateHeight(){
   // Update height. Maybe this should be a helper function??
-  int leftHeight = node->_left.height();
-  int rightHeight = node->_right.height();
+  int leftHeight = _nptr->_left.height();
+  int rightHeight = _nptr->_right.height();
   _nptr->_height = 1 + ( leftHeight > rightHeight ? leftHeight : rightHeight );
 }
 
@@ -271,14 +278,10 @@ void Treap :: rotateRight(TreapNode* parent, TreapNode* leftChild){
   parent->_left._nptr = subtree;
   _nptr = leftChild;
   
-  //updateHeight(_nptr);
-  //updateHeight(_nptr->_left._nptr);
-  //updateHeight(_nptr->_right._nptr);
+  _nptr->_right.updateHeight();
+  updateHeight();
+  //_nptr->_right.updateHeight();
 
-  //left child (now the parent) goes up so subtract by 1
-  _nptr->_height = _nptr->_height - 1;
-  //parent (now the left child of the new parent (old left child)) goes down so add 1
-  _nptr->_right._nptr->_height = _nptr->_right._nptr->_height + 1;
 }
 
 void Treap :: roatateLeft(TreapNode* parent, TreapNode* rightChild){
@@ -292,13 +295,8 @@ void Treap :: roatateLeft(TreapNode* parent, TreapNode* rightChild){
   parent->_right._nptr = subtree;
   _nptr = rightChild;
 
-  //updateHeight(_nptr);
-  //updateHeight(_nptr->_right._nptr);
-  //updateHeight(_nptr->_left._nptr);
-  //right child (now the parent) goes up so subtract by 1
-  //_nptr->_height = _nptr->_height - 1;
-  //parent (now the left child of the new parent (old right child)) goes down so add 1
-  //_nptr->_left._nptr->_height = _nptr->_left._nptr->_height + 1;
+  _nptr->_left.updateHeight();
+  updateHeight();
 }
 
 
