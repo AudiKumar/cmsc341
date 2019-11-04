@@ -18,8 +18,13 @@ Treap::~Treap() {
   // this implementations of the destructor assumes that the remove works
   // bassically will remove the root and rebalance until there's nothing 
   // there anymore
-  while(_nptr != nullptr){
-    remove(_nptr->_data);
+  //cout << "in desctrutor" << endl;
+  //while(_nptr != nullptr){
+   // remove(_nptr->_data);
+  //}
+  if(_nptr != nullptr){
+    delete _nptr;
+    _nptr = nullptr;
   }
 
 }
@@ -147,14 +152,17 @@ void Treap::insert(const data_t& x, const priority_t& p) {
   if (_nptr->_data < x) { 
     _nptr->_right.insert(x, p);
 
-    if (_nptr->_pri < p)
-      roatateLeft(_nptr, _nptr->_left._nptr);
+    if(_nptr->_pri < p){
+      roatateLeft(_nptr, _nptr->_right._nptr);
+    }
+      
     
   } else if (x < _nptr->_data ) {
     _nptr->_left.insert(x, p) ;
 
-    if (_nptr->_pri < p)
-      rotateRight(_nptr, _nptr->_right._nptr);
+    if(_nptr->_pri < p){
+      rotateRight(_nptr, _nptr->_left._nptr);
+    }
   }
 
   // Update height. Maybe this should be a helper function??
@@ -189,9 +197,41 @@ bool Treap::remove(const data_t& x) {
       return true;
     }
 
+    //you have to do this whole rotate down thing
+    else{
+      //if there is a left but no right do a right rotation
+      if( (_nptr->_right.empty()) && !(_nptr->_left.empty()) ){
+        rotateRight(_nptr, _nptr->_left._nptr);
+        remove(x);
+      }
+
+      
+      //if there is a right but no left do a left rotation
+      if ( !(_nptr->_right.empty()) && _nptr->_left.empty() ){
+        roatateLeft(_nptr, _nptr->_right._nptr);
+        remove(x);
+      }
+      
+      //if both childern are present then compare to see which one has the highest
+      //priority
+      if(!(_nptr->_left.empty()) && !(_nptr->_right.empty())){
+        if(_nptr->_right.priority() > _nptr->_left.priority()){
+          roatateLeft(_nptr, _nptr->_right._nptr);
+          remove(x);
+        }
+
+        else{
+          rotateRight(_nptr, _nptr->_left._nptr);
+          remove(x);
+        }
+      }
+    }    
+    /*
     do{
+      cout <<"here" << endl;
       rotateDown(_nptr);
     }while(!(_nptr->_right.empty()) && !(_nptr->_left.empty()) );
+    */
     delete _nptr;
     _nptr = nullptr;
     return true;
@@ -214,6 +254,12 @@ void Treap::dump() {
 
 //helper treaps fns
 void Treap :: rotateDown(TreapNode* nodeToRotate){
+  cout << "in rotate down" << endl;
+
+  cout << endl;
+  inorder();
+  cout << endl;
+
   //if both childern present check both to see which one should be moved up
   if( !(nodeToRotate->_right.empty()) && !(nodeToRotate->_left.empty()) ){
     
@@ -252,7 +298,7 @@ bool Treap :: isLeaf(){
 }
 //to get the right child as a TreapNode* 
 void Treap :: rotateRight(TreapNode* parent, TreapNode* leftChild){
-  cout << "in rotate right" << endl;
+  //cout << "in rotate right" << endl;
   TreapNode* subtree = leftChild->_right._nptr; 
   leftChild->_right._nptr = parent;
   parent->_left._nptr = subtree;
@@ -262,11 +308,11 @@ void Treap :: rotateRight(TreapNode* parent, TreapNode* leftChild){
   _nptr->_height = _nptr->_height - 1;
 
   //parent (now the left child of the new parent (old left child)) goes down so add 1
-  _nptr->_left._nptr->_height = _nptr->_left._nptr->_height + 1;
+  _nptr->_right._nptr->_height = _nptr->_right._nptr->_height + 1;
 }
 
 void Treap :: roatateLeft(TreapNode* parent, TreapNode* rightChild){
-  cout << "in roate left" << endl;
+  //cout << "in roate left" << endl;
   //if()
   TreapNode* subtree= rightChild->_left._nptr;
 
@@ -281,7 +327,7 @@ void Treap :: roatateLeft(TreapNode* parent, TreapNode* rightChild){
   _nptr->_height = _nptr->_height - 1;
 
   //parent (now the left child of the new parent (old right child)) goes down so add 1
-  _nptr->_right._nptr->_height = _nptr->_right._nptr->_height + 1;
+  _nptr->_left._nptr->_height = _nptr->_left._nptr->_height + 1;
 }
 
 

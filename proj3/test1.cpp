@@ -24,6 +24,9 @@ int main() {
   T.insert("J", 13);
   T.insert("G", 50);
 
+
+
+
   // Delete "K" and "C"
 
   T.remove("K");
