@@ -69,8 +69,8 @@ public:
 
 private:
   TreapNode *_nptr ;        // Pointer to node (data)
-
-  void checkPriority(TreapNode* parent, TreapNode* child);
+  void updateHeight();
+  void rotateUp(TreapNode* parent, TreapNode* child, bool isRight);
   void rotateDown(TreapNode* nodeToRotate);
   bool isLeaf(); 
   TreapNode*  copyHelper(const Treap& other);
