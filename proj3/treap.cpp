@@ -154,7 +154,7 @@ void Treap::insert(const data_t& x, const priority_t& p) {
     _nptr->_right.insert(x, p);
 
     if(_nptr->_pri < p){
-      rotateUp(_nptr, _nptr->_right._nptr, true);
+      roatateLeft(_nptr, _nptr->_right._nptr);
     }
       
     
@@ -162,7 +162,7 @@ void Treap::insert(const data_t& x, const priority_t& p) {
     _nptr->_left.insert(x, p) ;
 
     if(_nptr->_pri < p){
-      rotateUp(_nptr, _nptr->_left._nptr, false);
+      rotateRight(_nptr, _nptr->_left._nptr);
     }
   }
   // Update height. Maybe this should be a helper function??
@@ -170,10 +170,11 @@ void Treap::insert(const data_t& x, const priority_t& p) {
   //int rightHeight = _nptr->_right.height();
   //_nptr->_height = 1 + ( leftHeight > rightHeight ? leftHeight : rightHeight );
 
-
+  updateHeight(_nptr);
 }
 
 bool Treap::remove(const data_t& x) {
+  cout << "in remove" << endl;
   //
   // Implement treap element removal
   //
@@ -190,10 +191,44 @@ bool Treap::remove(const data_t& x) {
   }
 
   if(_nptr->_data == x){
-    rotateDown(_nptr);
-    delete _nptr;
-    _nptr = nullptr;
-    return true; 
+    cout << "sldkfjslfk" << endl;
+    if(_nptr->_left.empty() && _nptr->_right.empty()){
+      cout << "inside base case" << endl;
+      delete _nptr;
+      _nptr = nullptr;
+      return true; 
+    }
+    else{
+      if (  !(_nptr->_left.empty()) && !(_nptr->_right.empty()) ){
+        if (_nptr->_left.priority() > _nptr->_right.priority() ){
+          rotateRight(_nptr, _nptr->_left._nptr);
+          _nptr->_left.updateHeight(_nptr->_left._nptr);
+          _nptr->_left.remove(x); 
+        }
+        else{
+          roatateLeft(_nptr, _nptr->_right._nptr);
+          _nptr->_right.updateHeight(_nptr->_left._nptr);
+          _nptr->_right.remove(x);
+        }
+      }
+      // if there is just a left child right rotation
+      else if(!(_nptr->_left.empty()) && (_nptr->_right.empty())){
+        rotateRight(_nptr, _nptr->_right._nptr);
+        //_nptr->_right.updateHeight(_nptr->_left._nptr);
+        _nptr->_left.remove(x);
+      }
+
+      //if there is just the right child do a left rotation
+      else if ((_nptr->_left.empty()) && !(_nptr->_right.empty())){
+        roatateLeft(_nptr, _nptr->_right._nptr);
+        //updateHeight(_nptr->_left._nptr);
+        _nptr->_right.remove(x);
+      }
+    }
+    //updateHeight(_nptr);
+    //int leftHeight = _nptr->_left.height();
+    //int rightHeight = _nptr->_right.height();
+    //_nptr->_height = 1 + ( leftHeight > rightHeight ? leftHeight : rightHeight );
   }
 
   //if you get to a leaf not and remove is not found then you know the data 
@@ -206,72 +241,18 @@ bool Treap::remove(const data_t& x) {
 
 
 // Treap::dump() just calls TreapNode::dump()
-void Treap::dump() {
+void Treap :: dump() {
   if ( !empty() ) _nptr->dump() ;
 }
 
 
 //helper treaps fns
-void Treap :: updateHeight(){
+void Treap :: updateHeight(TreapNode* node){
   // Update height. Maybe this should be a helper function??
-  int leftHeight = _nptr->_left.height();
-  int rightHeight = _nptr->_right.height();
+  int leftHeight = node->_left.height();
+  int rightHeight = node->_right.height();
   _nptr->_height = 1 + ( leftHeight > rightHeight ? leftHeight : rightHeight );
 }
-
-//used for insert
-void Treap :: rotateUp(TreapNode* parent, TreapNode* child, bool isRight){
-  //base case: stops recursing
-  if (parent->_pri > child->_pri){
-    return;
-  }
-  //if it's the right chid and the priority is wrong rotate left
-  else if(isRight && (parent->_pri < child->_pri) ){
-    roatateLeft(parent, child);
-    rotateUp(parent, child, true);
-  }
-
-  else if (!isRight && (parent->_pri < child->_pri)){
-    rotateRight(parent, child);
-    rotateUp(child, parent, false);
-  }
-
-  //recursive case
-}
-
-//used for remove
-void Treap :: rotateDown(TreapNode* nodeToRotate){
-  //if you have reached the leaf then stop recursing
-  if(nodeToRotate->_left.empty() && nodeToRotate->_right.empty()){
-    return; 
-  }
-
-  //if both right and left child compare and see which one is greater
-  else if( !(nodeToRotate->_right.empty()) && !(nodeToRotate->_left.empty())   ){
-    if(nodeToRotate->_right.priority() > nodeToRotate->_left.priority()){
-      roatateLeft(nodeToRotate, nodeToRotate->_right._nptr);
-      rotateDown(nodeToRotate);
-    }
-    else{
-      rotateRight(nodeToRotate, nodeToRotate->_right._nptr);
-      rotateDown(nodeToRotate);
-    }
-  }
-  //if there is just a left child only do a right rotation
-  else if((nodeToRotate->_right.empty()) && !(nodeToRotate->_left.empty())){
-    rotateRight(nodeToRotate, nodeToRotate->_left._nptr);
-    rotateDown(nodeToRotate);
-  }
-   
-  
-  //if there is just a right child only do a left rotation
-  else if(!(nodeToRotate->_right.empty()) && (nodeToRotate->_left.empty())){
-    roatateLeft(nodeToRotate, nodeToRotate->_right._nptr);
-    rotateDown(nodeToRotate); 
-  }
-  
-}
-
 
 bool Treap :: isLeaf(){
   if (_nptr->_data.empty() == false){
@@ -290,12 +271,14 @@ void Treap :: rotateRight(TreapNode* parent, TreapNode* leftChild){
   parent->_left._nptr = subtree;
   _nptr = leftChild;
   
-  updateHeight();
+  //updateHeight(_nptr);
+  //updateHeight(_nptr->_left._nptr);
+  //updateHeight(_nptr->_right._nptr);
 
   //left child (now the parent) goes up so subtract by 1
-  //_nptr->_height = _nptr->_height - 1;
+  _nptr->_height = _nptr->_height - 1;
   //parent (now the left child of the new parent (old left child)) goes down so add 1
-  //_nptr->_right._nptr->_height = _nptr->_right._nptr->_height + 1;
+  _nptr->_right._nptr->_height = _nptr->_right._nptr->_height + 1;
 }
 
 void Treap :: roatateLeft(TreapNode* parent, TreapNode* rightChild){
@@ -309,7 +292,9 @@ void Treap :: roatateLeft(TreapNode* parent, TreapNode* rightChild){
   parent->_right._nptr = subtree;
   _nptr = rightChild;
 
-  //updateHeight();
+  //updateHeight(_nptr);
+  //updateHeight(_nptr->_right._nptr);
+  //updateHeight(_nptr->_left._nptr);
   //right child (now the parent) goes up so subtract by 1
   //_nptr->_height = _nptr->_height - 1;
   //parent (now the left child of the new parent (old right child)) goes down so add 1
