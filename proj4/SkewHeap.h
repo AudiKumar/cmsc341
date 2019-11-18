@@ -32,6 +32,9 @@ struct Node{
     tagged_union = ISINT;
   }
 
+
+  
+
   // Constructor for string data
   Node(string data) : data_string(data) {
     right = nullptr;
@@ -94,11 +97,22 @@ private:
   Node *m_heap;          // Root pointer
   pri_fn priority;       // Current priority function
 
+  
+  //make in order helper Node* (Node* temp)
+  //post order helper (for copy and assigment)
+
   //************************************
   //
   // PRIVATE HELPER FUNCTIONS GO HERE!
   //
   //************************************
+  void inOrderHelper(Node* n) const;
+  Node* mergeHelper(Node* left, Node* right); 
+  void swap(Node*& p1,Node*& p2);
+
+  //post order traversal for coping
+  Node* copyHelper(Node* n);
+
 
 };
 
