@@ -108,7 +108,7 @@ private:
   //************************************
   void inOrderHelper(Node* n) const;
   Node* mergeHelper(Node* left, Node* right); 
-  void swap(Node*& p1,Node*& p2);
+  //void swap(Node* p1,Node* p2);
 
   //post order traversal for coping
   Node* copyHelper(Node* n);
