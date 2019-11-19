@@ -1,7 +1,7 @@
 cmds = g++ -Wall -ansi -g -std=c++11
 
 test1: test1.cpp TypedHeap.o
-	$(cmds) TypedHeap.o test1.cpp -o test1
+	$(cmds) TypedHeap.o SkewHeap.o test1.cpp -o test1
 
 test0: test0.cpp SkewHeap.o
 	$(cmds) SkewHeap.o test0.cpp -o test0

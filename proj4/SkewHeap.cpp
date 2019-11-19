@@ -38,7 +38,7 @@
   }
 
   void SkewHeap :: setPriFn (pri_fn pri){
-      SkewHeap temp(pri);
+      SkewHeap temp(pri); 
       while(m_heap != nullptr){
         if (m_heap->tagged_union == ISINT){
             temp.insert(m_heap->data_int);
@@ -49,7 +49,7 @@
         removeTop();
       }
 
-      m_heap = temp.m_heap; 
+      m_heap = copyHelper(temp.m_heap);
       //this is gonna be annoying too
   }
 
@@ -101,10 +101,7 @@
 
   // Print inorder traversal.
   void SkewHeap :: inorder() const{
-    
-      cout << "SKEW HEAP: IN ORDER" << endl;
-      if (m_heap)
-      inOrderHelper(m_heap);
+      if (m_heap) inOrderHelper(m_heap);
   }
   
   // Dump the contents of the heap in decreasing priority order.
