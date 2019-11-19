@@ -4,7 +4,7 @@ using namespace std;
 
 int main(){
 
-    string test = "     this is a test      ";
+    string test = "this is a test";
 
     cout << "before change: " << test << endl;
 
