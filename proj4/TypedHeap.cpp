@@ -49,4 +49,9 @@
   }
 
   // Change the priority function.
-  void TypedHeap :: changePriority(pri_fn pri){}
+  void TypedHeap :: changePriority(pri_fn pri){
+    stringHeap.setPriFn(pri);
+    intHeap.setPriFn(pri);
+    totalHeap.setPriFn(pri);
+
+  }

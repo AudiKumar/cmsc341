@@ -39,16 +39,17 @@
 
   void SkewHeap :: setPriFn (pri_fn pri){
       SkewHeap temp(pri); 
+      temp.priority = pri; 
       while(m_heap != nullptr){
         if (m_heap->tagged_union == ISINT){
             temp.insert(m_heap->data_int);
         }
         if (m_heap->tagged_union == ISSTRING){
-            temp.insert(m_heap->data_int);
+            temp.insert(m_heap->data_string);
         }
         removeTop();
       }
-
+      priority = pri; 
       m_heap = copyHelper(temp.m_heap);
       //this is gonna be annoying too
   }
@@ -62,13 +63,15 @@
   // integer data.
   void SkewHeap :: insert(string data){
       Node* newNode = new Node(data);
-      m_heap = mergeHelper(m_heap, newNode);  
+      m_heap = mergeHelper(m_heap, newNode);
+      //m_heap = mergeHelper(newNode, m_heap);   
       //cout << "sadfads" << endl; 
   }
   void SkewHeap :: insert(int data){
       //make a new node for data, merge m_heap and newNode
       Node* newNode = new Node(data);
       m_heap = mergeHelper(m_heap, newNode);
+      //m_heap = mergeHelper(newNode, m_heap);
       //cout << "asdfsadf" << endl; 
   }
 
@@ -162,14 +165,21 @@
 
     //cout << "MERGE HELPER" << endl;
     // If either heap is empty, return the other
-    if (p1 == nullptr) return p2;     
-    if (p2 == nullptr) return p1;
+    if (p1 == nullptr) {
+        return p2;
+    }     
+    if (p2 == nullptr) {
+        return p1;
+    }
 
     // Ensure p1 has higher priority root
-    if(priority(p1) < priority(p2)) swap(p1, p2);
+    if(priority(p1) < priority(p2)){
+        swap(p1, p2);
+    } 
+        
 
     // Swap the left and right children of p1  
-    swap(p1->left, p2->right);
+    swap(p1->left, p1->right);
 
     // Recursively merge p1's left child with p2; make the
     // merged heap the new left child of p1		       
@@ -178,11 +188,7 @@
     return p1; 
  } 
 
-/*
- void SkewHeap :: swap(Node* p1, Node* p2){
-    swap(p1, p2);
- }
-*/
+
 
 Node* SkewHeap :: copyHelper(Node* n){
     if (n == nullptr) return nullptr;
