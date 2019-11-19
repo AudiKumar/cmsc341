@@ -17,15 +17,17 @@
       const auto strRange = (whiteSpaceTail - whiteSpaceFront) + 1;
       vec.at(x) = vec.at(x).substr(whiteSpaceFront, strRange);
       string curr = vec.at(x);
-      for (int y = 0; y < curr.size(); y++){
+      for (unsigned int y = 0; y < curr.size(); y++){
         if ( isdigit(curr[y]) == false  ){
           isNumber = false;
           break;
         }
       }
 
-      if (isNumber) intHeap.insert(curr);
-
+      if (isNumber){ 
+        int currInt = stoi(curr);
+        intHeap.insert(currInt);
+      }
       if (!isNumber) stringHeap.insert(curr);
     } 
   }
@@ -38,8 +40,11 @@
   }
   // Print all three heaps (integer, string, total).
   void TypedHeap :: printHeaps() const{
+    cout << "IntHeap Holds: " << endl;
     intHeap.dump();
+    cout << "StringHeap Holds: " << endl;
     stringHeap.dump(); 
+    cout << "TotalHeaps Holds\n" << endl;
     totalHeap.dump();
   }
 
