@@ -78,5 +78,41 @@ class HashTable {
 // *****************************************
 // Templated function definitions go here! *
 // *****************************************
+template <class T>
+HashTable<T> :: HashTable(unsigned size, hash_fn hash){
+
+}
+
+template <class T>
+HashTable<T> ::  ~HashTable(){
+
+}
+
+template <class T>
+HashTable<T> :: HashTable(const HashTable<T>& ht){
+  
+}
+
+template <class T>
+const HashTable<T>& HashTable<T> :: operator=(const HashTable<T>& ht){
+
+}
+
+template <class T>
+bool HashTable<T> :: insert(const T& object){
+
+}
+
+template <class T>
+bool HashTable<T> :: getNext(string key, T& obj){
+
+}
+
+template <class T>
+void HashTable<T> :: dump() const{
+  
+}
+  
+
 
 #endif
