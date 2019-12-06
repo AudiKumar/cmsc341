@@ -21,13 +21,12 @@ int main(){
     donuts.push_back(Donut("bavarian cream", 28, "mega donut"));
     donuts.push_back(Donut("cinnamon", 11, "super donut"));
 
-    cout << "first insert" << endl;
-    //h.insert(donuts.at(0));
-    //cout << "asdf" << endl;
-    //h.dump();
-    
-
-    //cout << "second insert " << endl;
-    //h.insert(donuts.at(1));
+    for (unsigned int x = 0; x < 3; x++){
+    //for (unsigned int x = 0; x < donuts.size(); x++){
+        h.insert(donuts.at(x));
+        h.dump();
+    }
+    cout << h.readTop() << endl;
+    h.removeTop();
     h.dump();
 }//end of main

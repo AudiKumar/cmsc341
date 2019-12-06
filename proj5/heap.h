@@ -89,7 +89,7 @@ constructor:
 */
 template <class T>
 Heap<T> :: Heap(){
-  _heap = vector<T>(ROOT + 1); 
+  _heap = vector<T>(ROOT); 
 }
 
 /*
@@ -104,7 +104,8 @@ void Heap<T> :: insert(const T& object){
   //cout << _heap.at(0)
   //cout << "SIZE IS " << size() << endl;
   //upHeap the recursive part
-  upHeap(size()); 
+  if(isRoot(size() + 1) == false)
+    upHeap(size()); 
 }
 
 /*
@@ -138,7 +139,7 @@ void Heap<T> :: removeTop(){
 */
 template <class T>
 void Heap<T> :: dump() const{
-  for (unsigned int x = 0; x < size() + 1; x++){
+  for (unsigned int x = 1; x < size() + 1; x++){
     
     cout << _heap.at(x) << endl;
   }
@@ -153,26 +154,25 @@ HELPERS
 // will be used for downHeap
 template <class T>
 bool Heap<T> :: maintainsHeapProperty(int index){
-  unsigned int leftIndex = 2 * index;
-  unsigned int rightIndex = (2 * index) + 1;
-  T curr = _heap.at(index);
-
-  if (leftIndex > size()){
-    return true;
-  }
-
-  T left = _heap.at(leftIndex);
-  T right = _heap.at(rightIndex);
-  
-  //checks to see if the max heap property is maintained
-  return curr.priority() > left.priority() && curr.priority() > right.priority();
+  return true;
 } 
 
 template <class T>
 void Heap<T> :: upHeap (int index){
-  //T parent = _heap.at(index/2);
-  //T child = _heap.at(index);
+  T parent = _heap.at(index/2);
+  T child = _heap.at(index);
   //if the parents priority is greater than the child stop homie (base case)
+  if (isRoot(index) || parent.priority() > child.priority() ){
+    cout << "in upHeap base case" << endl;
+    return;
+  }
+
+  else{
+    swap(_heap.at(index/2), _heap.at(index));
+    upHeap(index/2);
+  }
+
+  /*
   if (maintainsHeapProperty(index) || isRoot(index)){
     cout << "should happen at first insert" << endl;
     return;
@@ -182,6 +182,7 @@ void Heap<T> :: upHeap (int index){
     swap(_heap.at(index/2), _heap.at(index));
     upHeap(index/2);
   }
+  */
 }
 
 template <class T>
