@@ -21,12 +21,23 @@ int main(){
     donuts.push_back(Donut("bavarian cream", 28, "mega donut"));
     donuts.push_back(Donut("cinnamon", 11, "super donut"));
 
-    for (unsigned int x = 0; x < 3; x++){
+
+    cout << "###########################################################" << endl;
+    cout << "TESTING insert and dump" << endl;
+    cout << "###########################################################" << endl;
+    for (unsigned int x = 0; x < donuts.size(); x++){
     //for (unsigned int x = 0; x < donuts.size(); x++){
         h.insert(donuts.at(x));
         h.dump();
     }
-    cout << h.readTop() << endl;
+
+    cout << "\n\n\n\n###########################################################" << endl;
+    cout << "TESTING read and removeTop" << endl;
+    cout << "###########################################################" << endl;   
+    cout << "The Top of the Heap is " << h.readTop() << endl;
+    
+    cout << "ABOUT TO REMOVE THE TOP" << endl;
     h.removeTop();
+    //cout << "before the dump" << endl;
     h.dump();
 }//end of main
