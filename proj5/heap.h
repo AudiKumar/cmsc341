@@ -125,12 +125,16 @@ void Heap<T> :: removeTop(){
     if (empty()){
       throw range_error("There is nothing in the heap");
     }
-
-    swap(  _heap.at(ROOT), _heap.at(size() )   );
-    _heap.pop_back();
-    cout << "before downHeap" << endl; 
-    downHeap(ROOT); 
-
+    //if(size() > ROOT + 1){
+      swap(  _heap.at(ROOT), _heap.at(size() )   );
+      _heap.pop_back();
+      cout << "before downHeap" << endl; 
+      downHeap(ROOT); 
+    //}
+    //else{
+      //_heap.pop_back();
+    //}
+    
     //remove the root
     //heapify
 }
@@ -149,27 +153,6 @@ void Heap<T> :: dump() const{
 // *****************************************
 // HELPERS                                 *
 // *****************************************
-
-// will be used for downHeap
-template <class T>
-bool Heap<T> :: maintainsHeapProperty(int index){
-
-
-  unsigned int leftIndex = 2 * index;
-  unsigned int rightIndex = (2 * index) + 1;
-  T curr = _heap.at(index);
-
-
-  //cout << "size " << size() << " \nLeft Index " << leftIndex  << endl;
-
-  if (leftIndex >= size() )
-    return true;
-
-  T left = _heap.at(leftIndex);
-  T right = _heap.at(rightIndex);
-
-  return curr.priority() > left.priority() && curr.priority() > right.priority();
-} 
 
 template <class T>
 void Heap<T> :: upHeap (int index){
@@ -191,39 +174,32 @@ void Heap<T> :: upHeap (int index){
 
 template <class T>
 void Heap<T> :: downHeap(int index){
-
   cout << "inDownHeap" << endl;
-  //cout << "the current index and content: " << index << "   " << _heap.at(index) << endl;
-  dump();
-  //cout << ""
-  //cout << maintainsHeapProperty(index) << "\n\n\n"  << endl;
-
+  
   int leftIndex = 2 * index;
   int rightIndex = (2 * index) + 1;
+  T left;
+  T right;
+  T curr = _heap.at(index);
 
-  //cout << "before performing checks" << endl;
-
-  //if it maintains the heap pro
-  if (maintainsHeapProperty(index) || isLeaf(index)){
-    cout << "IN BASE CASE OF DOWN HEAP" << endl;
-    //dump();
-    return;
-  }
-  //recursive case
-  else{
-    cout << "should go to the else first" << endl;
-    //if the lefts priority is greater than the parent swap and recurse
-    if (checkLeft(index)){
-      swap(_heap.at(index), _heap.at(leftIndex));
-      downHeap(leftIndex);
-    }
-    //if the rights priority is greater than the parent swap and recurse
-    else if(checkRight(index)){
-      swap(_heap.at(index), _heap.at(rightIndex));
-      downHeap(rightIndex);
-    }
-  }
+  //you need cases for the following
   
+  //when you are at a leaf [base case 1]
+  if(leftIndex > size() )
+    return;
+  
+  //if both childern exist
+  if (leftIndex < size() && rightIndex < size() ){
+    left = _heap.at(leftIndex);
+    right = _heap.at(rightIndex);
+
+  }
+
+  //when both children exist
+  //left only
+  //right only
+
+
 
 }
 
@@ -232,38 +208,5 @@ bool Heap<T> :: isRoot(int index){
   return index == ROOT;
 }
 
-template <class T>
-bool Heap<T> :: isLeaf(unsigned int index){
-  if(index > size() + 1){
-    cout << "\n\n\nINSIDE isLeaf" << endl;
-    cout << "you shouldn't be checking this when the index is greater than size" << endl;
-    return false;
-  }
-
-  unsigned int leftChild = 2*(index);
-  return leftChild > size() + 1;
-}
-
-//checks if the left priority is greater than the parent 
-template <class T>
-bool Heap <T> :: checkLeft(int parentIndex){
-  T curr = _heap.at(parentIndex);
-  int leftIndex = 2 * parentIndex;
-  T left = _heap.at(leftIndex);
-  //T right = _heap.at(rightIndex);
-
-  return curr.priority() < left.priority();
-}
-  
-//checks if the right priority is greater than the parent 
-template <class T>
-bool Heap <T> :: checkRight(int parentIndex){
-  T curr = _heap.at(parentIndex);
-  int rightIndex = (2 * parentIndex) + 1;
-  //T left = _heap.at(leftIndex);
-  T right = _heap.at(rightIndex);
-
-  return curr.priority() < right.priority();
-}
 
 #endif
