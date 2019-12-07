@@ -72,7 +72,7 @@ class HashTable {
   // ***********************************************
   // Private helper function declarations go here! *
   // ***********************************************
-  int modCompresion(T& obj); // not sure what will be needed for this tbh in terms of parameters
+  //int modCompresion(const T& obj); // not sure what will be needed for this tbh in terms of parameters
 };
 
 
@@ -107,9 +107,9 @@ HashTable<T> :: HashTable(const HashTable<T>& ht){
   _table = new Heap<T>[_N];
 
   //deep copies entries of ht
-  for (unsigned int x = 0; x < _N; x++)
-    _hash[x] = ht._hash[x];
-  
+  for (unsigned int x = 0; x < _N; x++){
+    _table[x] = ht._table[x];
+  }
     
 }
 
@@ -133,58 +133,87 @@ const HashTable<T>& HashTable<T> :: operator=(const HashTable<T>& ht){
   _table = new Heap<T>[_N];
   
   //deep copies contents of ht
-  for (unsigned int x = 0; x < _N; x++)
-    _hash[x] = ht._hash[x];
-  
+  for (unsigned int x = 0; x < _N; x++){
+    _table[x] = ht._table[x];
+  }
   return *this;
 }
 
 template <class T>
 bool HashTable<T> :: insert(const T& object){
-  int ogIndex = modCompresion(object);
+  unsigned hashVal = _hash(object.key());
+  unsigned int ogIndex = hashVal % tableSize();
+  
 
-  if(  _hash[ogIndex].empty() )
-    _hash[ogIndex].insert(object);
+  if(  _table[ogIndex].empty() ){
+    _table[ogIndex].insert(object);
+  }
+    
 
   else{
-    int copyOG = ogIndex + 1;
+    unsigned int copyOG = ( (unsigned) ogIndex )  + 1;
     bool keepProbing = true;
 
     while(keepProbing){
-      if (copyOG > tableSize())
+      if (copyOG  >= tableSize()){
         copyOG = copyOG % tableSize();
-
-      if(copyOG == ogIndex)
+      }
+      if(copyOG == ogIndex){
         return false;
-      
-      if( _hash[copyOG].empty()  ){
-        _hash[copyOG].insert(object);
+      }
+      if( _table[copyOG].empty()  ){
+        _table[copyOG].insert(object);
         keepProbing = false;
       }
-         
-
     }
     return true;
   }
+  
+  return false;
 }
 
 template <class T>
 bool HashTable<T> :: getNext(string key, T& obj){
 
+  //mod compresion
+  unsigned hashVal = _hash(key);
+  unsigned int ogIndex = hashVal % tableSize();
+
+  if (  _table[ogIndex].readTop().key() == key  ){
+    _table[ogIndex].removeTop();
+    return true; 
+  }
+
+  if (    _table[ogIndex].used()    ){
+    unsigned int copyOG = ogIndex   + 1;
+    bool keepProbing = true;
+
+    while(keepProbing){
+      if (copyOG  >= tableSize())
+        copyOG = copyOG % tableSize();
+
+      if(copyOG == ogIndex)
+        return false;
+
+      if(_table[copyOG].readTop().key() == key){
+        keepProbing = false;
+        _table[copyOG].removeTop();
+        return true;
+      }
+    }
+  }
+  
+  return false;
 }
 
 template <class T>
 void HashTable<T> :: dump() const{
-  
-}
-  
-// *****************************************
-// HELPERS                                 *
-// *****************************************
-template <class T>
-int HashTable<T> :: modCompresion(T& obj){
-  unsigned hashVal = hash_fn(obj);
-  return hashVal % tableSize(); 
+
+  for(unsigned int x = 0; x < tableSize(); x++){
+    cout << "[" << x << "]:" << endl;
+    cout << _table[x] << endl;
+  }
+
 }
 
 #endif
