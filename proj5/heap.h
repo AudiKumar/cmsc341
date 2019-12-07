@@ -98,6 +98,7 @@ insert:
 */
 template <class T>
 void Heap<T> :: insert(const T& object){
+  _used = true;
 
   //find the newest node in the heap 
   _heap.push_back(object);
@@ -144,11 +145,10 @@ void Heap<T> :: dump() const{
   cout << endl;
 }
 
-/*
-#########################################################
-HELPERS 
-#########################################################
-*/
+// *****************************************
+// HELPERS                                 *
+// *****************************************
+
 // will be used for downHeap
 template <class T>
 bool Heap<T> :: maintainsHeapProperty(int index){

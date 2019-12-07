@@ -72,14 +72,13 @@ class HashTable {
   // ***********************************************
   // Private helper function declarations go here! *
   // ***********************************************
-  int modCompresion(); // not sure what will be needed for this tbh in terms of parameters
+  int modCompresion(T& obj); // not sure what will be needed for this tbh in terms of parameters
 };
+
 
 // *****************************************
 // Templated function definitions go here! *
 // *****************************************
-
-
 template <class T>
 HashTable<T> :: HashTable(unsigned size, hash_fn hash){
   _N = size;
@@ -142,7 +141,31 @@ const HashTable<T>& HashTable<T> :: operator=(const HashTable<T>& ht){
 
 template <class T>
 bool HashTable<T> :: insert(const T& object){
+  int ogIndex = modCompresion(object);
 
+  if(  _hash[ogIndex].empty() )
+    _hash[ogIndex].insert(object);
+
+  else{
+    int copyOG = ogIndex + 1;
+    bool keepProbing = true;
+
+    while(keepProbing){
+      if (copyOG > tableSize())
+        copyOG = copyOG % tableSize();
+
+      if(copyOG == ogIndex)
+        return false;
+      
+      if( _hash[copyOG].empty()  ){
+        _hash[copyOG].insert(object);
+        keepProbing = false;
+      }
+         
+
+    }
+    return true;
+  }
 }
 
 template <class T>
@@ -155,6 +178,13 @@ void HashTable<T> :: dump() const{
   
 }
   
-
+// *****************************************
+// HELPERS                                 *
+// *****************************************
+template <class T>
+int HashTable<T> :: modCompresion(T& obj){
+  unsigned hashVal = hash_fn(obj);
+  return hashVal % tableSize(); 
+}
 
 #endif
