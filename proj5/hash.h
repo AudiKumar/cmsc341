@@ -72,7 +72,7 @@ class HashTable {
   // ***********************************************
   // Private helper function declarations go here! *
   // ***********************************************
-  
+  int modCompresion(); // not sure what will be needed for this tbh in terms of parameters
 };
 
 // *****************************************
@@ -80,17 +80,31 @@ class HashTable {
 // *****************************************
 template <class T>
 HashTable<T> :: HashTable(unsigned size, hash_fn hash){
-
+  _N = size;
+  _hash = hash;
+  _table = new Heap<T>[_N];
 }
 
 template <class T>
 HashTable<T> ::  ~HashTable(){
-
+  delete [] _table;
 }
 
 template <class T>
 HashTable<T> :: HashTable(const HashTable<T>& ht){
+  _N = ht._N;
+  _n = ht._n;
+  _hash = ht._hash;
   
+  if (_table != nullptr){
+    delete [] _table;
+  }
+
+  //iterate through the entries in the hash table and deep copies them
+  for (unsigned int x = 0; x < _n; x++){
+    _hash[x] = ht._hash[x];
+  }
+    
 }
 
 template <class T>
