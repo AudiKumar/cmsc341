@@ -84,6 +84,7 @@ HashTable<T> :: HashTable(unsigned size, hash_fn hash){
   _N = size;
   _hash = hash;
   _table = new Heap<T>[_N];
+  cout << "sadfasdfads" << endl;
 }
 
 template <class T>
@@ -145,16 +146,15 @@ bool HashTable<T> :: insert(const T& object){
   unsigned int ogIndex = hashVal % tableSize();
   
 
-  if(  _table[ogIndex].empty() ){
+  if ( _table[ogIndex].empty() || _table[ogIndex].readTop().key() == object.key()  ){
     _table[ogIndex].insert(object);
   }
-    
 
   else{
     unsigned int copyOG = ( (unsigned) ogIndex )  + 1;
     bool keepProbing = true;
 
-    while(keepProbing){
+    while(keepProbing == true){
       if (copyOG  >= tableSize()){
         copyOG = copyOG % tableSize();
       }
@@ -166,10 +166,9 @@ bool HashTable<T> :: insert(const T& object){
         keepProbing = false;
       }
     }
-    return true;
+    
   }
-  
-  return false;
+  return true;
 }
 
 template <class T>
@@ -180,6 +179,7 @@ bool HashTable<T> :: getNext(string key, T& obj){
   unsigned int ogIndex = hashVal % tableSize();
 
   if (  _table[ogIndex].readTop().key() == key  ){
+    //cout << "before removeTop() call" << endl;
     _table[ogIndex].removeTop();
     return true; 
   }
@@ -211,7 +211,7 @@ void HashTable<T> :: dump() const{
 
   for(unsigned int x = 0; x < tableSize(); x++){
     cout << "[" << x << "]:" << endl;
-    cout << _table[x] << endl;
+    _table[x].dump();
   }
 
 }

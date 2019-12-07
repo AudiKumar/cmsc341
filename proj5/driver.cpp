@@ -9,6 +9,9 @@ unsigned cyclic_hash16(string key);
 
 int main() {
 
+  //cout << "in main" << endl;
+
+
   // Create a vector of donuts to insert in the hash table
   vector<Donut> donuts;
   donuts.push_back(Donut("glazed", 5, "super donut"));
@@ -27,14 +30,20 @@ int main() {
   // Create the hash table of length 10 using cyclic_hash function
   HashTable<Donut> ht(10, cyclic_hash16);
 
+  //cout << "after making hashtable" << endl;
+  
   // Insert the donut orders
   for (auto d : donuts) {
     ht.insert(d);
   }
 
+  //cout << "after inserting" << endl;
+
   cout << "\nDump of ht:\n";
   ht.dump();
 
+
+  
   // Extract some orders
   
   Donut d;
@@ -88,5 +97,6 @@ unsigned cyclic_hash16(string key) {
     h = h & 0xffff;
   }
   return h;
+  
 }
 
