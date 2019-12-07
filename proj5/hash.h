@@ -78,6 +78,8 @@ class HashTable {
 // *****************************************
 // Templated function definitions go here! *
 // *****************************************
+
+
 template <class T>
 HashTable<T> :: HashTable(unsigned size, hash_fn hash){
   _N = size;
@@ -92,24 +94,50 @@ HashTable<T> ::  ~HashTable(){
 
 template <class T>
 HashTable<T> :: HashTable(const HashTable<T>& ht){
+  
+  //copies all of the static memebers
   _N = ht._N;
   _n = ht._n;
   _hash = ht._hash;
   
-  if (_table != nullptr){
+  //deletes old table if needed
+  if (_table != nullptr)
     delete [] _table;
-  }
+  
+  //creates new table based off new size
+  _table = new Heap<T>[_N];
 
-  //iterate through the entries in the hash table and deep copies them
-  for (unsigned int x = 0; x < _n; x++){
+  //deep copies entries of ht
+  for (unsigned int x = 0; x < _N; x++)
     _hash[x] = ht._hash[x];
-  }
+  
     
 }
 
 template <class T>
 const HashTable<T>& HashTable<T> :: operator=(const HashTable<T>& ht){
+  
+  //checks to see if you are trying to operator= the same thing
+  if(this == &ht)
+    return *this;
+  
+  //deletes old table if needed
+  if (_table != nullptr)
+    delete [] _table;
+  
+  //copies all of the static memebers  
+  _N = ht._N;
+  _n = ht._n;
+  _hash = ht._hash;
 
+  //creates new table based off new size
+  _table = new Heap<T>[_N];
+  
+  //deep copies contents of ht
+  for (unsigned int x = 0; x < _N; x++)
+    _hash[x] = ht._hash[x];
+  
+  return *this;
 }
 
 template <class T>
