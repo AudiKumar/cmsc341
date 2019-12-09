@@ -64,8 +64,8 @@ class Heap {
   // *********************************************
   // Private helper function declarations go here!
   // *********************************************
-  void upHeap(int index);
-  void downHeap(int index);
+  void upHeap(unsigned int index);
+  void downHeap(unsigned int index);
   bool isRoot(int index);
   bool isLeaf(unsigned int index);
   bool maintainsHeapProperty(int index); // will be used for downHeap
@@ -104,7 +104,7 @@ void Heap<T> :: insert(const T& object){
   _heap.push_back(object);
 
   //upHeap the recursive part
-  if(isRoot(size() + 1) == false)
+  if(isRoot(size()) == false)
     upHeap(size()); 
 }
 
@@ -126,10 +126,10 @@ void Heap<T> :: removeTop(){
       throw range_error("There is nothing in the heap");
     }
     //if(size() > ROOT + 1){
-      swap(  _heap.at(ROOT), _heap.at(size() )   );
-      _heap.pop_back();
-      cout << "before downHeap" << endl; 
-      downHeap(ROOT); 
+    swap(  _heap.at(ROOT), _heap.at(size() )   );
+    _heap.pop_back();
+    cout << "before downHeap" << endl; 
+    downHeap(ROOT); 
     //}
     //else{
       //_heap.pop_back();
@@ -155,7 +155,7 @@ void Heap<T> :: dump() const{
 // *****************************************
 
 template <class T>
-void Heap<T> :: upHeap (int index){
+void Heap<T> :: upHeap (unsigned int index){
   T parent = _heap.at(index/2);
   T child = _heap.at(index);
   
@@ -173,33 +173,65 @@ void Heap<T> :: upHeap (int index){
 }
 
 template <class T>
-void Heap<T> :: downHeap(int index){
-  cout << "inDownHeap" << endl;
-  
-  int leftIndex = 2 * index;
-  int rightIndex = (2 * index) + 1;
-  T left;
-  T right;
-  T curr = _heap.at(index);
-
-  //you need cases for the following
-  
-  //when you are at a leaf [base case 1]
-  if(leftIndex > size() )
+void Heap<T> :: downHeap(unsigned int index){
+  if (size() == 0){
     return;
-  
-  //if both childern exist
-  if (leftIndex < size() && rightIndex < size() ){
-    left = _heap.at(leftIndex);
-    right = _heap.at(rightIndex);
-
   }
+  else{
+    
+    
+    while (index < size() + 1){
+      unsigned int temp = index;
+      unsigned int leftIndex = 2 * index;
+      unsigned int rightIndex = (2 * index) + 1;
+      T curr = _heap.at(index);
 
-  //when both children exist
-  //left only
-  //right only
+
+      if (leftIndex < size() + 1){
+        T left = _heap.at(leftIndex);
+        if(left.priority() > curr.priority()){
+          swap(_heap.at(index), _heap.at(leftIndex))
+          index = left;
+        }
+      }
+
+      if(rightIndex < size() + 1){
+        T right = _heap.at(rightIndex);
+        if(right.priority() >  curr.priority() ){
+          swap(_heap.at(index), _heap.at(rightIndex));
+          index = rightIndex;
+        }
+      }
 
 
+      /*
+      T curr = _heap.at(index);
+      //T left = _heap.at(leftIndex);
+      unsigned int leftIndex = 2 * index;
+      unsigned int rightIndex = (2 * index) + 1;
+
+      //the reason I did a nested if statement was so that I didn't go too far passed 
+      //80 columns
+      //check the left and right indpendently 
+      if ( leftIndex < size() + 1  && rightIndex < size() + 1 && _heap.at(rightIndex).priority() > _heap.at(leftIndex).priority() ){
+        if (_heap.at(rightIndex).priority() <  curr.priority() ) {
+          swap(_heap.at(index), _heap.at(rightIndex));
+          index = rightIndex;
+        }
+      }
+
+      else if (leftIndex < size() + 1 && rightIndex < size() + 1 && _heap.at(leftIndex).priority() > _heap.at(rightIndex).priority() && _heap.at(leftIndex).priority() < curr.priority() ){
+        swap(_heap.at(index), _heap.at(leftIndex));
+        index = leftIndex;
+      }
+
+      else{
+        break; 
+      }
+      */
+    }
+    
+  }
 
 }
 

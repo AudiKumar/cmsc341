@@ -101,8 +101,8 @@ HashTable<T> :: HashTable(const HashTable<T>& ht){
   _hash = ht._hash;
   
   //deletes old table if needed
-  if (_table != nullptr)
-    delete [] _table;
+  //if (_table != nullptr)
+  //  delete [] _table;
   
   //creates new table based off new size
   _table = new Heap<T>[_N];
@@ -148,6 +148,7 @@ bool HashTable<T> :: insert(const T& object){
 
   if ( _table[ogIndex].empty() || _table[ogIndex].readTop().key() == object.key()  ){
     _table[ogIndex].insert(object);
+    _n++;
   }
 
   else{
@@ -164,6 +165,7 @@ bool HashTable<T> :: insert(const T& object){
       if( _table[copyOG].empty()  ){
         _table[copyOG].insert(object);
         keepProbing = false;
+        _n++;
       }
     }
     
@@ -178,9 +180,12 @@ bool HashTable<T> :: getNext(string key, T& obj){
   unsigned hashVal = _hash(key);
   unsigned int ogIndex = hashVal % tableSize();
 
-  if (  _table[ogIndex].readTop().key() == key  ){
+  
+  if (  !(_table[ogIndex].empty())  && _table[ogIndex].readTop().key() == key    ){
     //cout << "before removeTop() call" << endl;
+    obj = _table[ogIndex].readTop();
     _table[ogIndex].removeTop();
+    _n--;
     return true; 
   }
 
@@ -189,17 +194,23 @@ bool HashTable<T> :: getNext(string key, T& obj){
     bool keepProbing = true;
 
     while(keepProbing){
-      if (copyOG  >= tableSize())
+      if (copyOG  >= tableSize()){
         copyOG = copyOG % tableSize();
+      }
 
-      if(copyOG == ogIndex)
+      if(copyOG == ogIndex){
         return false;
+      }
 
-      if(_table[copyOG].readTop().key() == key){
+      if(!(_table[copyOG].empty())  && _table[copyOG].readTop().key() == key){
         keepProbing = false;
-        _table[copyOG].removeTop();
+        obj = _table[ogIndex].readTop();
+        _table[ogIndex].removeTop();
+        _n--;
         return true;
       }
+
+      copyOG++;
     }
   }
   
