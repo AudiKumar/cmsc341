@@ -204,8 +204,8 @@ bool HashTable<T> :: getNext(string key, T& obj){
 
       if(!(_table[copyOG].empty())  && _table[copyOG].readTop().key() == key){
         keepProbing = false;
-        obj = _table[ogIndex].readTop();
-        _table[ogIndex].removeTop();
+        obj = _table[copyOG].readTop();
+        _table[copyOG].removeTop();
         _n--;
         return true;
       }

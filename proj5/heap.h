@@ -128,12 +128,12 @@ void Heap<T> :: removeTop(){
     //if(size() > ROOT + 1){
     swap(  _heap.at(ROOT), _heap.at(size() )   );
     _heap.pop_back();
-    cout << "before downHeap" << endl; 
+    //cout << "before downHeap" << endl; 
     downHeap(ROOT); 
     //}
-    //else{
-      //_heap.pop_back();
-    //}
+    //else if (size() == ROOT + 1) {
+    //  _heap.pop_back();
+   // }
     
     //remove the root
     //heapify
@@ -190,8 +190,8 @@ void Heap<T> :: downHeap(unsigned int index){
       if (leftIndex < size() + 1){
         T left = _heap.at(leftIndex);
         if(left.priority() > curr.priority()){
-          swap(_heap.at(index), _heap.at(leftIndex))
-          index = left;
+          swap(_heap.at(index), _heap.at(leftIndex));
+          index = leftIndex;
         }
       }
 
@@ -201,6 +201,11 @@ void Heap<T> :: downHeap(unsigned int index){
           swap(_heap.at(index), _heap.at(rightIndex));
           index = rightIndex;
         }
+      }
+      
+      //if there was no change in the index then you break
+      if (curr.priority() == _heap.at(index).priority()){
+        return;
       }
 
 
