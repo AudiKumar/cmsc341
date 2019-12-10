@@ -84,7 +84,6 @@ HashTable<T> :: HashTable(unsigned size, hash_fn hash){
   _N = size;
   _hash = hash;
   _table = new Heap<T>[_N];
-  cout << "sadfasdfads" << endl;
 }
 
 template <class T>
@@ -145,12 +144,15 @@ bool HashTable<T> :: insert(const T& object){
   unsigned hashVal = _hash(object.key());
   unsigned int ogIndex = hashVal % tableSize();
   
-
+  //if hashing the function leads to the correct key and the index is empty()
+  //the object will be inserted and _n will be incremented
   if ( _table[ogIndex].empty() || _table[ogIndex].readTop().key() == object.key()  ){
     _table[ogIndex].insert(object);
     _n++;
   }
 
+  //this case is used for linear probing, once the correct key is found you will
+  //do the same as you did above
   else{
     unsigned int copyOG = ( (unsigned) ogIndex )  + 1;
     bool keepProbing = true;
@@ -180,15 +182,20 @@ bool HashTable<T> :: getNext(string key, T& obj){
   unsigned hashVal = _hash(key);
   unsigned int ogIndex = hashVal % tableSize();
 
-  
+
+  //if hashing the function leads to the correct key (and the index is not empty) 
+  //then you will readTop, removeTop and decrement _n (the number of total entries)
   if (  !(_table[ogIndex].empty())  && _table[ogIndex].readTop().key() == key    ){
-    //cout << "before removeTop() call" << endl;
     obj = _table[ogIndex].readTop();
     _table[ogIndex].removeTop();
     _n--;
     return true; 
   }
 
+
+  //this case will run if two objects hash to the same function, one of them 
+  //will be move to the next available empty index once you find an available
+  //index the same stuff will be done above
   if (    _table[ogIndex].used()    ){
     unsigned int copyOG = ogIndex   + 1;
     bool keepProbing = true;
@@ -219,7 +226,7 @@ bool HashTable<T> :: getNext(string key, T& obj){
 
 template <class T>
 void HashTable<T> :: dump() const{
-
+  //iterates through and displays each heap at each index
   for(unsigned int x = 0; x < tableSize(); x++){
     cout << "[" << x << "]:" << endl;
     _table[x].dump();

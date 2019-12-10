@@ -109,6 +109,7 @@ void Heap<T> :: insert(const T& object){
 }
 
 /*
+readTop(): will return the root
 */
 template <class T>
 T Heap<T> :: readTop() const{
@@ -119,41 +120,41 @@ T Heap<T> :: readTop() const{
 }
 
 /*
+removeTop(): swaps the root and a leaf, deletes the leaf(which was the root)
+             then merges the root down
 */
 template <class T>
 void Heap<T> :: removeTop(){
     if (empty()){
       throw range_error("There is nothing in the heap");
     }
-    //if(size() > ROOT + 1){
+
     swap(  _heap.at(ROOT), _heap.at(size() )   );
     _heap.pop_back();
-    //cout << "before downHeap" << endl; 
     downHeap(ROOT); 
-    //}
-    //else if (size() == ROOT + 1) {
-    //  _heap.pop_back();
-   // }
-    
-    //remove the root
-    //heapify
 }
 
 /*
-
+dump(): iterates through the the heap 
 */
 template <class T>
 void Heap<T> :: dump() const{
   for (unsigned int x = 1; x < size() + 1; x++){  
     cout << _heap.at(x) << endl;
   }
-  //cout << endl;
 }
 
 // *****************************************
 // HELPERS                                 *
 // *****************************************
 
+
+/*
+upHeap(): helper for insert, check the parent and child. if the parents 
+          priority is less than the child you will swap them and keep 
+          recursing, base case checks for the the heap maintianing the 
+          property 
+*/
 template <class T>
 void Heap<T> :: upHeap (unsigned int index){
   T parent = _heap.at(index/2);
@@ -161,7 +162,6 @@ void Heap<T> :: upHeap (unsigned int index){
   
   //if the parents priority is greater than the child stop homie (base case)
   if (isRoot(index) || parent.priority() > child.priority() ){
-    //cout << "in upHeap base case" << endl;
     return;
   }
 
@@ -172,6 +172,11 @@ void Heap<T> :: upHeap (unsigned int index){
 
 }
 
+/*
+downHeap(): helper for removeTop, checks to see if the left and right index are valid
+            if one of them do not maintain the heap property with the parent they will 
+            swapped. If nothing was swaped then the helper will be exited
+*/
 template <class T>
 void Heap<T> :: downHeap(unsigned int index){
   if (size() == 0){
@@ -181,7 +186,6 @@ void Heap<T> :: downHeap(unsigned int index){
     
     
     while (index < size() + 1){
-      unsigned int temp = index;
       unsigned int leftIndex = 2 * index;
       unsigned int rightIndex = (2 * index) + 1;
       T curr = _heap.at(index);
@@ -207,33 +211,6 @@ void Heap<T> :: downHeap(unsigned int index){
       if (curr.priority() == _heap.at(index).priority()){
         return;
       }
-
-
-      /*
-      T curr = _heap.at(index);
-      //T left = _heap.at(leftIndex);
-      unsigned int leftIndex = 2 * index;
-      unsigned int rightIndex = (2 * index) + 1;
-
-      //the reason I did a nested if statement was so that I didn't go too far passed 
-      //80 columns
-      //check the left and right indpendently 
-      if ( leftIndex < size() + 1  && rightIndex < size() + 1 && _heap.at(rightIndex).priority() > _heap.at(leftIndex).priority() ){
-        if (_heap.at(rightIndex).priority() <  curr.priority() ) {
-          swap(_heap.at(index), _heap.at(rightIndex));
-          index = rightIndex;
-        }
-      }
-
-      else if (leftIndex < size() + 1 && rightIndex < size() + 1 && _heap.at(leftIndex).priority() > _heap.at(rightIndex).priority() && _heap.at(leftIndex).priority() < curr.priority() ){
-        swap(_heap.at(index), _heap.at(leftIndex));
-        index = leftIndex;
-      }
-
-      else{
-        break; 
-      }
-      */
     }
     
   }
